@@ -1,0 +1,100 @@
+{
+  "name": "mute-factors",
+  "description": "The live factor is (1 - master) x (1 - category) for every category",
+  "timeout": 60,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at",
+      "label": "start on the arena spot"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 50
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "WolfPup",
+        "value": 50
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.factor",
+      "args": {
+        "category": "WolfPup"
+      },
+      "expect": 0.25,
+      "label": "0.5 x 0.5"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.factor",
+      "args": {
+        "category": "Weather"
+      },
+      "expect": 0.5,
+      "label": "master only"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.factor",
+      "args": {
+        "category": "Effects"
+      },
+      "expect": 0,
+      "label": "master 100 mutes all"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "WolfPup",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.factor",
+      "args": {
+        "category": "ChickenLove"
+      },
+      "expect": 1,
+      "label": "back to full loudness"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

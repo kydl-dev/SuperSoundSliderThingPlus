@@ -37,8 +37,8 @@
       "args": {
         "mod": "com.kydldev.SuperSoundSliderThingPlus"
       },
-      "contains": "example",
-      "label": "example tab"
+      "contains": "sound",
+      "label": "sound tab"
     },
     {
       "do": "hook",
@@ -52,8 +52,8 @@
     {
       "do": "check",
       "check": "uiVisible",
-      "text": "Example",
-      "label": "the example page is drawn"
+      "text": "Mute levels",
+      "label": "the sound page is drawn"
     },
     {
       "do": "hook",

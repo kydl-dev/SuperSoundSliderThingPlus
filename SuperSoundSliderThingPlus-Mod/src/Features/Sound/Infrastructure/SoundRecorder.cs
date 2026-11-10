@@ -49,6 +49,16 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
             return n;
         }
 
+        /// <summary>Was a sound whose name contains the text recorded in the category?</summary>
+        internal static bool Has(string soundPart, SoundCategory category)
+        {
+            foreach (KeyValuePair<string, Entry> pair in Seen)
+            {
+                if (pair.Value.Category == category && pair.Key.Contains(soundPart)) return true;
+            }
+            return false;
+        }
+
         /// <summary>One line per category, e.g. "WolfPup 2, ChickenLove 1" - for test details and logs.</summary>
         internal static string Summary()
         {

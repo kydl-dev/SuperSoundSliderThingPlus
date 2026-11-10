@@ -1,7 +1,6 @@
 using BepInEx.Configuration;
 using KydlCore.Common;
 using KydlCore.Core;
-using SuperSoundSliderThingPlus.Features.Example.Infrastructure;
 using SuperSoundSliderThingPlus.Features.Sound.Infrastructure;
 using SuperSoundSliderThingPlus.Presentation.Hub.Registration;
 
@@ -33,8 +32,7 @@ namespace SuperSoundSliderThingPlus.Bootstrap
         {
             Current = this;
             bool page = HubTabs.RegisterModPage(_config);
-            Add(new ExampleFeature(Deps));
-            Add(new SoundFeature());
+            Add(new SoundFeature(Deps));
             bool started = Refresh();
             ModLog.Verbose("ModInstaller: installed " + Features.Count + " feature(s), hub page " + page + ", started " + started);
             return page && started;

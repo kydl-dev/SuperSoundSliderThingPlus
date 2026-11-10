@@ -1,8 +1,5 @@
 using KydlCore.Common;
 using SuperSoundSliderThingPlus.Bootstrap;
-using SuperSoundSliderThingPlus.Features.Example.Infrastructure;
-using SuperSoundSliderThingPlus.Presentation.Hub.Commands;
-using SuperSoundSliderThingPlus.Presentation.Hub.Registration;
 
 namespace SuperSoundSliderThingPlus.Testing.TestHooks
 {
@@ -26,21 +23,5 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
         /// Is the feature running (FeatureRegistry state after its Enable switches)?
         [TestHook("SuperSoundSliderThingPlus.featureRunning")]
         static bool FeatureRunning(string id) { return ModInstaller.Current != null && ModInstaller.Current.Features.IsRunning(id); }
-
-        /// Is the example tab registered in the KY hub right now (no stale tab after the feature stops)?
-        [TestHook("SuperSoundSliderThingPlus.exampleTab")]
-        static bool ExampleTab() { return global::KydlCore.Features.Hub.Contracts.KyHub.HasTab(Plugin.ModGuid, HubTabs.ExampleId); }
-
-        /// EXAMPLE: the same path as the hub slider (dispatcher -> handler -> rules -> executor). Returns the response, e.g. "Success: clamped into range".
-        [TestHook("SuperSoundSliderThingPlus.example.set")]
-        static string ExampleSet(double value)
-        {
-            if (ModInstaller.Current == null) return "Failed: mod not installed";
-            return ExampleCommands.SetValue(ModInstaller.Current.Deps.Commands, (float)value).ToString();
-        }
-
-        /// EXAMPLE: the current value.
-        [TestHook("SuperSoundSliderThingPlus.example.value")]
-        static double ExampleValue() { return ExampleFeature.Instance != null ? ExampleFeature.Instance.Value : double.NaN; }
     }
 }

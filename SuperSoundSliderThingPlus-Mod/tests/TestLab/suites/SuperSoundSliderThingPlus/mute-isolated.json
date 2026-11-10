@@ -1,0 +1,59 @@
+{
+  "name": "mute-isolated",
+  "description": "A category slider does not silence another category",
+  "timeout": 60,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at",
+      "label": "start on the arena spot"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.play",
+      "args": {
+        "prefab": "sfx_thunder"
+      },
+      "contains": "playing"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ShieldGenerator",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.probeAudible",
+      "expect": true,
+      "label": "weather unaffected by shield slider"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ShieldGenerator",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.clear"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

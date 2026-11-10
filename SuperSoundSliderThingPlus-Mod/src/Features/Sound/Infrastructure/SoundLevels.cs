@@ -1,3 +1,4 @@
+using BepInEx.Configuration;
 using KydlCore.Common;
 using SuperSoundSliderThingPlus.Configuration;
 using SuperSoundSliderThingPlus.Features.Sound.Domain;
@@ -22,18 +23,37 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
         }
 
         /// <summary>The mute level (percent) of one category slider; 0 while the config is not bound yet.</summary>
-        internal static float MuteOf(SoundCategory category)
+        internal static float MuteOf(SoundCategory category) => Read(EntryOf(ToSlider(category)));
+
+        /// <summary>The config entry behind a slider (null while the config is not bound).</summary>
+        internal static ConfigEntry<float> EntryOf(SoundSlider slider)
         {
-            switch (category)
+            switch (slider)
             {
-                case SoundCategory.Weather: return Read(ModSettings.WeatherMute);
-                case SoundCategory.WolfPup: return Read(ModSettings.WolfPupMute);
-                case SoundCategory.ShieldGenerator: return Read(ModSettings.ShieldGeneratorMute);
-                case SoundCategory.ChickenLove: return Read(ModSettings.ChickenLoveMute);
-                default: return Read(ModSettings.EffectsMute);
+                case SoundSlider.Master: return ModSettings.MasterMute;
+                case SoundSlider.Weather: return ModSettings.WeatherMute;
+                case SoundSlider.WolfPup: return ModSettings.WolfPupMute;
+                case SoundSlider.ShieldGenerator: return ModSettings.ShieldGeneratorMute;
+                case SoundSlider.ChickenLove: return ModSettings.ChickenLoveMute;
+                default: return ModSettings.EffectsMute;
             }
         }
 
-        private static float Read(BepInEx.Configuration.ConfigEntry<float> entry) => entry == null ? SoundMixRules.DefaultMute : entry.Value;
+        /// <summary>The mute level (percent) of a slider; 0 while the config is not bound yet.</summary>
+        internal static float MuteOf(SoundSlider slider) => Read(EntryOf(slider));
+
+        private static SoundSlider ToSlider(SoundCategory category)
+        {
+            switch (category)
+            {
+                case SoundCategory.Weather: return SoundSlider.Weather;
+                case SoundCategory.WolfPup: return SoundSlider.WolfPup;
+                case SoundCategory.ShieldGenerator: return SoundSlider.ShieldGenerator;
+                case SoundCategory.ChickenLove: return SoundSlider.ChickenLove;
+                default: return SoundSlider.Effects;
+            }
+        }
+
+        private static float Read(ConfigEntry<float> entry) => entry == null ? SoundMixRules.DefaultMute : entry.Value;
     }
 }

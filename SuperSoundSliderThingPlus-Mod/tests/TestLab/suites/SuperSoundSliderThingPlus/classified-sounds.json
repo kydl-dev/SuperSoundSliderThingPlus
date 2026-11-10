@@ -1,0 +1,50 @@
+{
+  "name": "classified-sounds",
+  "description": "The patches classify real world sounds (needs the world to play something)",
+  "timeout": 60,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at",
+      "label": "start on the arena spot"
+    },
+    {
+      "do": "wait",
+      "seconds": 8
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.play",
+      "args": {
+        "prefab": "sfx_thunder"
+      },
+      "contains": "playing",
+      "label": "probe plays"
+    },
+    {
+      "do": "wait",
+      "seconds": 1
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.classified",
+      "args": {
+        "sound": "sfx_thunder",
+        "category": "Weather"
+      },
+      "expect": true,
+      "label": "thunder is Weather"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.clear"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

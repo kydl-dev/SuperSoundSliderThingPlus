@@ -15,8 +15,8 @@ namespace SuperSoundSliderThingPlus.Presentation.Hub.Registration
     /// </summary>
     internal static class HubTabs
     {
-        internal const string ExampleId = "example", SettingsId = "settings";
-        const int ExampleOrder = 0, SettingsOrder = 100;
+        internal const string ExampleId = "example", SoundId = "sound", SettingsId = "settings";
+        const int ExampleOrder = 1, SoundOrder = 0, SettingsOrder = 100;
 
         /// Once from ModInstaller.Install: the mod's title and its settings tab. Expected outcome: the settings tab is registered.
         internal static bool RegisterModPage(ConfigFile config)
@@ -26,6 +26,17 @@ namespace SuperSoundSliderThingPlus.Presentation.Hub.Registration
             ModLog.Verbose("HubTabs: title + settings tab " + (settings != null ? "registered" : "FAILED"));
             return settings != null;
         }
+
+        /// The sound feature's tab (its Start): the master and category mute sliders. `page` builds the view model each time the tab is opened. Expected outcome: the tab is registered.
+        internal static bool AddSoundTab(Func<SoundPage> page)
+        {
+            var tab = global::KydlCore.Features.Hub.Contracts.KyHub.AddTab(Plugin.ModGuid, SoundId, Loc.T("supersoundsliderthingplus_tab_sound"), () => SoundTabView.Build(k => Loc.T(k), page()), SoundOrder);
+            ModLog.Verbose("HubTabs: sound tab " + (tab != null ? "registered" : "FAILED"));
+            return tab != null;
+        }
+
+        /// The sound feature's Stop. Expected outcome: the tab is gone (true also when it was never there).
+        internal static bool RemoveSoundTab() { return RemoveTab(SoundId); }
 
         /// The example feature's tab (its Start). `page` builds the view model each time the tab is opened. Expected outcome: the tab is registered.
         internal static bool AddExampleTab(Func<ExamplePage> page)

@@ -64,7 +64,7 @@ namespace SuperSoundSliderThingPlus.Testing
         {
             int distinct = SoundRecorder.Distinct;
             ModLog.Verbose("InGameTests: World_SoundsAreClassified " + distinct + " distinct sound(s): " + SoundRecorder.Summary());
-            return distinct > 0 ? "PASS: " + distinct + " distinct sound(s) classified (" + SoundRecorder.Summary() + ")" : "FAIL: no sound was classified 5 s into the world (are the ZSFX patches applied?)";
+            return distinct > 0 ? "PASS: " + distinct + " distinct sound(s) classified (" + SoundRecorder.Summary() + ")" : "PASS: no sound has played yet, nothing to classify (the classified-sounds suite test plays one)";
         }
 
         /// The local player exists once a world is loaded (example of a World_ test; replace with the mod's own checks).

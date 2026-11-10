@@ -1,0 +1,128 @@
+using System;
+using System.Collections.Generic;
+using KydlCore.Common;
+using SuperSoundSliderThingPlus.Bootstrap;
+using SuperSoundSliderThingPlus.Features.Sound.Domain;
+using SuperSoundSliderThingPlus.Features.Sound.Infrastructure;
+using SuperSoundSliderThingPlus.Presentation.Hub.Commands;
+using SuperSoundSliderThingPlus.Presentation.Hub.Registration;
+using UnityEngine;
+
+namespace SuperSoundSliderThingPlus.Testing.TestHooks
+{
+    /// <summary>
+    /// DrakesTestLab hooks for the sound feature (same rules as ModTestHooks: real code paths, short stable answers; `min` / `max` are NOT
+    /// available on a hook step, so numbers a test must bound are exposed as bool reads like ProbeAudible / ProbeSilent). The probe is ONE sound
+    /// the test plays itself (an effect prefab found among the loaded assets), so a test never depends on what the world happens to play.
+    /// </summary>
+    internal static class SoundTestHooks
+    {
+        private const float AudibleAbove = 0.001f, SilentBelow = 0.0001f;
+        private static GameObject _probe;
+        private static AudioSource _probeSource;
+
+        /// <summary>Is the sound tab registered in the KY hub right now (no stale tab after the feature stops)?</summary>
+        [TestHook("SuperSoundSliderThingPlus.sound.tab")]
+        static bool SoundTab() { return global::KydlCore.Features.Hub.Contracts.KyHub.HasTab(Plugin.ModGuid, HubTabs.SoundId); }
+
+        /// <summary>The hub slider's path (dispatcher -> handler -> rules -> executor). Returns the response, e.g. "Success: clamped into range".</summary>
+        [TestHook("SuperSoundSliderThingPlus.mute.set")]
+        static string MuteSet(string slider, double value)
+        {
+            if (ModInstaller.Current == null) return "Failed: mod not installed";
+            SoundSlider parsed;
+            if (!TryParse(slider, out parsed)) return "Failed: unknown slider '" + slider + "'";
+            return SoundCommands.SetMute(ModInstaller.Current.Deps.Commands, parsed, (float)value).ToString();
+        }
+
+        /// <summary>The stored mute level (percent) of a slider; NaN for an unknown slider.</summary>
+        [TestHook("SuperSoundSliderThingPlus.mute.value")]
+        static double MuteValue(string slider)
+        {
+            SoundSlider parsed;
+            return TryParse(slider, out parsed) ? SoundLevels.MuteOf(parsed) : double.NaN;
+        }
+
+        /// <summary>The live loudness factor of a category (D-011: (1 - master) x (1 - category)); NaN for an unknown category.</summary>
+        [TestHook("SuperSoundSliderThingPlus.sound.factor")]
+        static double Factor(string category)
+        {
+            SoundCategory parsed;
+            return Enum.TryParse(category, true, out parsed) ? SoundLevels.Factor(parsed) : double.NaN;
+        }
+
+        /// <summary>Has the patch classified a sound whose name contains `sound` into `category` (the recorder saw it)?</summary>
+        [TestHook("SuperSoundSliderThingPlus.sound.classified")]
+        static bool Classified(string sound, string category)
+        {
+            SoundCategory parsed;
+            bool known = Enum.TryParse(category, true, out parsed);
+            bool seen = known && SoundRecorder.Has(sound, parsed);
+            ModLog.Verbose("SoundTestHooks: classified '" + sound + "' as " + category + " -> " + seen + " (recorded: " + SoundRecorder.Summary() + ")");
+            return seen;
+        }
+
+        /// <summary>Plays one effect prefab next to the player and keeps it as THE probe. Returns what happened, e.g. "playing sfx_thunder(Clone)".</summary>
+        [TestHook("SuperSoundSliderThingPlus.sound.play")]
+        static string Play(string prefab)
+        {
+            Clear();
+            GameObject source = FindPrefab(prefab);
+            if (source == null) return "Failed: no loaded prefab named '" + prefab + "'";
+            Player player = Player.m_localPlayer;
+            if (player == null) return "Failed: no local player";
+            _probe = UnityEngine.Object.Instantiate(source, player.transform.position + Vector3.up, Quaternion.identity);
+            _probeSource = _probe.GetComponentInChildren<AudioSource>();
+            ModLog.Verbose("SoundTestHooks: playing " + _probe.name + ", audio source " + (_probeSource != null));
+            return _probeSource != null ? "playing " + _probe.name : "Failed: '" + prefab + "' has no AudioSource";
+        }
+
+        /// <summary>Is the probe sound playing right now?</summary>
+        [TestHook("SuperSoundSliderThingPlus.sound.probePlaying")]
+        static bool ProbePlaying() { return Alive() && _probeSource.isPlaying; }
+
+        /// <summary>Is the probe playing AND audible (the volume the game and the patches left on its AudioSource)?</summary>
+        [TestHook("SuperSoundSliderThingPlus.sound.probeAudible")]
+        static bool ProbeAudible()
+        {
+            bool audible = Alive() && _probeSource.isPlaying && _probeSource.volume > AudibleAbove;
+            ModLog.Verbose("SoundTestHooks: probeAudible " + audible + " (" + Describe() + ")");
+            return audible;
+        }
+
+        /// <summary>Is the probe playing but silenced (volume at zero)? A sound that is not playing is NOT silent here: the test must prove it plays.</summary>
+        [TestHook("SuperSoundSliderThingPlus.sound.probeSilent")]
+        static bool ProbeSilent()
+        {
+            bool silent = Alive() && _probeSource.isPlaying && _probeSource.volume < SilentBelow;
+            ModLog.Verbose("SoundTestHooks: probeSilent " + silent + " (" + Describe() + ")");
+            return silent;
+        }
+
+        /// <summary>Removes the probe (also done by the next Play).</summary>
+        [TestHook("SuperSoundSliderThingPlus.sound.clear")]
+        static bool Clear()
+        {
+            if (_probe != null) UnityEngine.Object.Destroy(_probe);
+            _probe = null;
+            _probeSource = null;
+            return _probe == null;
+        }
+
+        private static bool Alive() => _probe != null && _probeSource != null;
+
+        private static string Describe() => Alive() ? _probe.name + " playing " + _probeSource.isPlaying + " volume " + _probeSource.volume.ToString("F4") : "no probe";
+
+        private static bool TryParse(string name, out SoundSlider slider) => Enum.TryParse(name, true, out slider);
+
+        // effect prefabs are plain assets (no ZNetView), so ZNetScene does not list them: take one of the loaded GameObject assets by name
+        private static GameObject FindPrefab(string name)
+        {
+            foreach (GameObject go in Resources.FindObjectsOfTypeAll<GameObject>())
+            {
+                if (go.name == name && !go.scene.IsValid()) return go;
+            }
+            return null;
+        }
+    }
+}

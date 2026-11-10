@@ -1,0 +1,92 @@
+{
+  "name": "mute-config",
+  "description": "Hub slider path (dispatcher -> handler -> rules -> executor) writes the config, clamps, and rejects nonsense",
+  "timeout": 60,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at",
+      "label": "start on the arena spot"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Weather",
+        "value": 40
+      },
+      "contains": "Success",
+      "label": "in range"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.value",
+      "args": {
+        "slider": "Weather"
+      },
+      "expect": 40
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Weather",
+        "value": 250
+      },
+      "contains": "Success",
+      "label": "above range is clamped"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.value",
+      "args": {
+        "slider": "Weather"
+      },
+      "expect": 100
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Weather",
+        "value": -5
+      },
+      "contains": "Success",
+      "label": "below range is clamped"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.value",
+      "args": {
+        "slider": "Weather"
+      },
+      "expect": 0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Nope",
+        "value": 10
+      },
+      "contains": "Failed",
+      "label": "unknown slider is refused"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.value",
+      "args": {
+        "slider": "Master"
+      },
+      "expect": 0,
+      "label": "other sliders untouched"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

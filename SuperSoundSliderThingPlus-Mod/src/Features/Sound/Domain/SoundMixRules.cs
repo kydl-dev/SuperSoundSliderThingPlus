@@ -23,6 +23,14 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
             return OperationResponse<float>.Success(factor, clamped ? Clamped : InRange);
         }
 
+        /// <summary>Expected outcome: Success with the level clamped into 0..100 (reason says whether it was clamped); Rejected for NaN / infinity.</summary>
+        internal static OperationResponse<float> Level(float requested)
+        {
+            if (!IsNumber(requested)) return OperationResponse<float>.Rejected(NotANumber);
+            float level = Clamp(requested);
+            return OperationResponse<float>.Success(level, level == requested ? InRange : Clamped);
+        }
+
         private static bool IsNumber(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
 
         private static float Clamp(float mute) => mute < MinMute ? MinMute : mute > MaxMute ? MaxMute : mute;
