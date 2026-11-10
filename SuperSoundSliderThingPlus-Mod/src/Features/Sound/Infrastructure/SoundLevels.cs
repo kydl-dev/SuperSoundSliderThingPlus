@@ -35,6 +35,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
                 case SoundSlider.WolfPup: return ModSettings.WolfPupMute;
                 case SoundSlider.ShieldGenerator: return ModSettings.ShieldGeneratorMute;
                 case SoundSlider.ChickenLove: return ModSettings.ChickenLoveMute;
+                case SoundSlider.Portal: return ModSettings.PortalMute;
                 default: return ModSettings.EffectsMute;
             }
         }
@@ -50,6 +51,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
                 case SoundCategory.WolfPup: return SoundSlider.WolfPup;
                 case SoundCategory.ShieldGenerator: return SoundSlider.ShieldGenerator;
                 case SoundCategory.ChickenLove: return SoundSlider.ChickenLove;
+                case SoundCategory.Portal: return SoundSlider.Portal;
                 default: return SoundSlider.Effects;
             }
         }

@@ -99,6 +99,16 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
             return silent;
         }
 
+        /// <summary>The loudness-matching gain the equalizer gives the probe's clip right now, e.g. "gain 1.42 rms 0.0705" ("gain 1.00" = left alone / off).</summary>
+        [TestHook("SuperSoundSliderThingPlus.loudness.gain")]
+        static string LoudnessGain()
+        {
+            if (!Alive()) return "Failed: no probe";
+            float gain = SuperSoundSliderThingPlus.Features.Sound.Infrastructure.LoudnessEqualizer.GainFor(_probeSource.clip);
+            float rms = SuperSoundSliderThingPlus.Integrations.Valheim.ClipMeter.RmsOf(_probeSource.clip, 1f);
+            return "gain " + gain.ToString("F2") + " rms " + rms.ToString("F4");
+        }
+
         /// <summary>Removes the probe (also done by the next Play).</summary>
         [TestHook("SuperSoundSliderThingPlus.sound.clear")]
         static bool Clear()

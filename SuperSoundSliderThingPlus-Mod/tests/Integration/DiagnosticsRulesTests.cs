@@ -11,6 +11,7 @@ namespace SuperSoundSliderThingPlus.Tests.Integration;
 ///    recorder - shows what it was doing when something went wrong;
 ///  * a mod whose features drive creatures (Character / MonsterAI / BaseAI / Humanoid) tracks them with KydlCore's FlightRecorder.
 /// Origin: 2026-11-05 SteveTheTroll release runs, where a frozen far troll and a pinned guard target were found only after lines were added.
+/// A file that only observes creatures (reads positions / names) carries the comment "kydl:read-only-observer" and is exempt (user 2026-11-10).
 /// Keep these green; a deliberate exception is written in docs/Architecture.md AND here.
 /// </summary>
 [TestFixture]
@@ -47,7 +48,8 @@ public class DiagnosticsRulesTests
     [Test] public void CreatureCode_IsTrackedByTheFlightRecorder()
     {
         var files = GameSideFiles().ToList();
-        var driving = files.Where(f => CreatureType.IsMatch(Code(f))).Select(Path.GetFileName).ToList();
+        // a file that only READS creatures (never moves / commands / spawns them) says so with the marker comment and needs no tracking
+        var driving = files.Where(f => CreatureType.IsMatch(Code(f)) && !File.ReadAllText(f).Contains("kydl:read-only-observer")).Select(Path.GetFileName).ToList();
         bool tracks = Directory.GetFiles(TestPaths.Src, "*.cs", SearchOption.AllDirectories).Any(f => Tracks.IsMatch(Code(f)));
         Assert.That(driving.Count == 0 || tracks, Is.True,
             "PROJECT_RULES 28: these files drive creatures, so the mod tracks them - FlightRecorder.Track(creature, label, () => \"the mod's state\") where it takes one over: " + string.Join(", ", driving));

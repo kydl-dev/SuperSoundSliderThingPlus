@@ -12,7 +12,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
         private static readonly string[] WeatherPrefabs = { "sfx_thunder", "sfx_mistlands_thunder" };
         private static readonly string[] WeatherClipWords = { "rain", "thunder", "blizzard", "mainwind", "windbreeze", "oneshots_wind" };
         private static readonly char[] OwnerSeparators = { '_', '(', ')', ' ', '-', '.' };
-        private const string AmbientClipPrefix = "amb_", ShieldGeneratorWord = "shieldgenerator", WolfPupOwner = "wolf_cub", LoveWord = "love";
+        private const string AmbientClipPrefix = "amb_", ShieldGeneratorWord = "shieldgenerator", PortalWord = "portal", WolfPupOwner = "wolf_cub", LoveWord = "love";
         private const string HenToken = "hen", ChickPrefix = "chick";
 
         /// <summary>Expected outcome: always a category; <see cref="SoundCategory.Effects"/> when nothing special matches. Null / empty names match nothing.</summary>
@@ -20,7 +20,8 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
         {
             string sound = Normalise(soundName);
             string owner = Normalise(ownerName);
-            if (sound.Contains(ShieldGeneratorWord)) return SoundCategory.ShieldGenerator;
+            if (sound.Contains(ShieldGeneratorWord) || owner.Contains(ShieldGeneratorWord)) return SoundCategory.ShieldGenerator;
+            if (sound.Contains(PortalWord) || owner.Contains(PortalWord)) return SoundCategory.Portal;
             if (owner.Contains(WolfPupOwner)) return SoundCategory.WolfPup;
             if (IsChickenLove(sound, owner)) return SoundCategory.ChickenLove;
             if (IsWeather(sound)) return SoundCategory.Weather;

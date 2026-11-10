@@ -1,0 +1,73 @@
+{
+  "name": "equalize",
+  "description": "Loudness matching: off leaves the probe clip alone (gain 1.00), on measures it and scales it",
+  "timeout": 60,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at",
+      "label": "start on the arena spot"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.play",
+      "args": {
+        "prefab": "sfx_thunder"
+      },
+      "contains": "playing",
+      "label": "probe plays"
+    },
+    {
+      "do": "setConfig",
+      "values": {
+        "General/EqualizeLoudness": false
+      }
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.loudness.gain",
+      "contains": "gain 1.00",
+      "label": "off: left alone"
+    },
+    {
+      "do": "setConfig",
+      "values": {
+        "General/EqualizeLoudness": true
+      }
+    },
+    {
+      "do": "wait",
+      "seconds": 1
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.loudness.gain",
+      "contains": "gain",
+      "notContains": "gain 1.00",
+      "label": "on: measured and scaled"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.probeAudible",
+      "expect": true,
+      "label": "still audible while matched"
+    },
+    {
+      "do": "setConfig",
+      "values": {
+        "General/EqualizeLoudness": false
+      }
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.clear"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

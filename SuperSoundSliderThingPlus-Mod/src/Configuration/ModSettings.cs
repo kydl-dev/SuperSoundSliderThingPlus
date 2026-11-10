@@ -19,7 +19,9 @@ namespace SuperSoundSliderThingPlus.Configuration
         // One functionality = one config section with its own switch (PROJECT_RULES 11), only when the mod has several of them, e.g.:
         //   public static ConfigEntry<bool> ColoursEnable;   // c.Bind("Colours", "Enable", true, "...");  on only when On && ColoursEnable.Value
         // [General] the sliders (D-004, D-011): every one is a MUTE level in percent, 0 = full loudness, 100 = muted; the master scales all others
-        public static ConfigEntry<float> MasterMute, EffectsMute, WeatherMute, WolfPupMute, ShieldGeneratorMute, ChickenLoveMute;
+        public static ConfigEntry<float> MasterMute, EffectsMute, WeatherMute, WolfPupMute, ShieldGeneratorMute, ChickenLoveMute, PortalMute;
+        // [General] matching (D-005 step 2): off by default, the player switches it on
+        public static ConfigEntry<bool> EqualizeLoudness;
         // [DebugLog]
         public static ConfigEntry<bool> DebugLog;
 
@@ -37,6 +39,15 @@ namespace SuperSoundSliderThingPlus.Configuration
         public static readonly Tunable<float> OwnerRadius = new Tunable<float>("Sound", "OwnerRadius", 1.5f, 0.1f, 5f,
             "Dev-only (metres, 0.1-5): a sound belongs to the creature standing within this distance of it (tells a wolf pup's sounds from an adult's).");
 
+        public static readonly Tunable<float> TargetRms = new Tunable<float>("Loudness", "TargetRms", 0.1f, 0.01f, 0.5f,
+            "Dev-only (RMS 0.01-0.5): the loudness every clip is scaled toward while Equalize is on.");
+        public static readonly Tunable<float> MinGain = new Tunable<float>("Loudness", "MinGain", 0.25f, 0.05f, 1f,
+            "Dev-only (0.05-1): equalizing never cuts a clip below this factor.");
+        public static readonly Tunable<float> MaxGain = new Tunable<float>("Loudness", "MaxGain", 3f, 1f, 8f,
+            "Dev-only (1-8): equalizing never boosts a clip above this factor (a very quiet clip stays quiet instead of turning into noise).");
+        public static readonly Tunable<float> MeasureSeconds = new Tunable<float>("Loudness", "MeasureSeconds", 1f, 0.1f, 5f,
+            "Dev-only (seconds 0.1-5): the length of the window from the middle of a clip that is measured.");
+
         /// Expected outcome: every player entry is bound (returns that check).
         public static bool Bind(ConfigFile c)
         {
@@ -52,6 +63,8 @@ namespace SuperSoundSliderThingPlus.Configuration
             WeatherMute = BindMute(c, "WeatherMute", "Mute level in percent for world weather sounds (rain, wind, thunder): 0 = full loudness, 100 = muted.");
             WolfPupMute = BindMute(c, "WolfPupMute", "Mute level in percent for wolf pup sounds: 0 = full loudness, 100 = muted.");
             ShieldGeneratorMute = BindMute(c, "ShieldGeneratorMute", "Mute level in percent for shield generator sounds: 0 = full loudness, 100 = muted.");
+            PortalMute = BindMute(c, "PortalMute", "Mute level in percent for portal sounds: 0 = full loudness, 100 = muted.");
+            EqualizeLoudness = c.Bind("General", "EqualizeLoudness", false, "Match the loudness of sounds: every sound clip is measured once and scaled toward one target loudness, so loud sounds come down and quiet ones come up. Off = the game's own balance.");
             ChickenLoveMute = BindMute(c, "ChickenLoveMute", "Mute level in percent for the chicken love sound: 0 = full loudness, 100 = muted.");
 
             ConfigTools.ApplyCommaFix(c, savedLines);    // after every Bind: "3,5" typed by hand means 3.5, not 35

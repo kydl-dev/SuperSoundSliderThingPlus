@@ -2,20 +2,83 @@
   "name": "SuperSoundSliderThingPlus",
   "description": "SuperSoundSliderThingPlus: loads with its exact KydlCore, registers its KY hub sound page, the feature switches live, the sliders write their config through the real handler, and each slider really mutes its category (a played effect's volume)",
   "requireMods": [
-    { "guid": "com.kydldev.SuperSoundSliderThingPlus", "minVersion": "0.1.0" },
-    { "guid": "com.kydldev.KydlCore", "minVersion": "1.2.0" }
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "minVersion": "0.1.0"
+    },
+    {
+      "guid": "com.kydldev.KydlCore",
+      "minVersion": "1.2.0"
+    }
   ],
   "configOverrides": [
-    { "guid": "com.kydldev.SuperSoundSliderThingPlus", "section": "General", "key": "EnableAll", "value": "true" },
-    { "guid": "com.kydldev.SuperSoundSliderThingPlus", "section": "General", "key": "MasterMute", "value": "0" },
-    { "guid": "com.kydldev.SuperSoundSliderThingPlus", "section": "General", "key": "SoundEffectsMute", "value": "0" },
-    { "guid": "com.kydldev.SuperSoundSliderThingPlus", "section": "General", "key": "WeatherMute", "value": "0" },
-    { "guid": "com.kydldev.SuperSoundSliderThingPlus", "section": "General", "key": "WolfPupMute", "value": "0" },
-    { "guid": "com.kydldev.SuperSoundSliderThingPlus", "section": "General", "key": "ShieldGeneratorMute", "value": "0" },
-    { "guid": "com.kydldev.SuperSoundSliderThingPlus", "section": "General", "key": "ChickenLoveMute", "value": "0" },
-    { "guid": "com.kydldev.SuperSoundSliderThingPlus", "section": "DebugLog", "key": "Enable", "value": "true" }
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "section": "General",
+      "key": "EnableAll",
+      "value": "true"
+    },
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "section": "General",
+      "key": "MasterMute",
+      "value": "0"
+    },
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "section": "General",
+      "key": "SoundEffectsMute",
+      "value": "0"
+    },
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "section": "General",
+      "key": "WeatherMute",
+      "value": "0"
+    },
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "section": "General",
+      "key": "WolfPupMute",
+      "value": "0"
+    },
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "section": "General",
+      "key": "ShieldGeneratorMute",
+      "value": "0"
+    },
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "section": "General",
+      "key": "ChickenLoveMute",
+      "value": "0"
+    },
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "section": "General",
+      "key": "PortalMute",
+      "value": "0"
+    },
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "section": "General",
+      "key": "EqualizeLoudness",
+      "value": "false"
+    },
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "section": "DebugLog",
+      "key": "Enable",
+      "value": "true"
+    }
   ],
-  "setup": { "timeOfDay": 0.5, "freezeTime": 1, "god": 1, "hideUnlockPopups": 1 },
+  "setup": {
+    "timeOfDay": 0.5,
+    "freezeTime": 1,
+    "god": 1,
+    "hideUnlockPopups": 1
+  },
   "resetBetweenTests": true,
   "tests": [
     "startup-clean",
@@ -27,6 +90,8 @@
     "mute-weather",
     "mute-shield",
     "mute-master",
-    "mute-isolated"
+    "mute-isolated",
+    "mute-portal",
+    "equalize"
   ]
 }

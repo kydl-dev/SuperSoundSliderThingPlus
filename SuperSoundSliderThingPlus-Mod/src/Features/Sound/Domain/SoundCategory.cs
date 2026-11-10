@@ -7,6 +7,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
         Weather,
         WolfPup,
         ShieldGenerator,
-        ChickenLove
+        ChickenLove,
+        Portal
     }
 }

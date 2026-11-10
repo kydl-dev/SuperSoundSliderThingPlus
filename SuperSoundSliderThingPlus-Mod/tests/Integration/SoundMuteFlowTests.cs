@@ -32,8 +32,8 @@ namespace SuperSoundSliderThingPlus.Tests.Integration
             var applied = new List<string>();
             var d = Wire(new Owner { IsOwner = true }, applied);
             foreach (SoundSlider s in System.Enum.GetValues(typeof(SoundSlider))) d.Dispatch(new SetMuteCommand(s, 10f));
-            Assert.That(applied, Has.Count.EqualTo(6));
-            Assert.That(applied, Does.Contain("Master=10").And.Contain("ChickenLove=10"));
+            Assert.That(applied, Has.Count.EqualTo(7));
+            Assert.That(applied, Does.Contain("Master=10").And.Contain("ChickenLove=10").And.Contain("Portal=10"));
         }
 
         [Test] public void NotOwner_NothingIsApplied()

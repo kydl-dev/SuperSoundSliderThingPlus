@@ -1,0 +1,77 @@
+{
+  "name": "mute-portal",
+  "description": "Portal slider at 100 silences a portal sound and 0 brings it back",
+  "timeout": 60,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at",
+      "label": "start on the arena spot"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.play",
+      "args": {
+        "prefab": "sfx_OpenPortal"
+      },
+      "contains": "playing",
+      "label": "probe plays"
+    },
+    {
+      "do": "wait",
+      "until": {
+        "check": "hook",
+        "name": "SuperSoundSliderThingPlus.sound.probeAudible",
+        "expect": true
+      },
+      "timeout": 5
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Portal",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "until": {
+        "check": "hook",
+        "name": "SuperSoundSliderThingPlus.sound.probeSilent",
+        "expect": true
+      },
+      "timeout": 5
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Portal",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "until": {
+        "check": "hook",
+        "name": "SuperSoundSliderThingPlus.sound.probeAudible",
+        "expect": true
+      },
+      "timeout": 5
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.clear"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

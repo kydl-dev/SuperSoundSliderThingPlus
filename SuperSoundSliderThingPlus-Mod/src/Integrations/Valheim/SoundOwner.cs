@@ -3,6 +3,7 @@ using KydlCore.Common;
 using SuperSoundSliderThingPlus.Configuration;
 using UnityEngine;
 
+// kydl:read-only-observer - this file only reads where characters are; it never moves, commands or spawns one (guard exemption, user 2026-11-10)
 namespace SuperSoundSliderThingPlus.Integrations.Valheim
 {
     /// <summary>

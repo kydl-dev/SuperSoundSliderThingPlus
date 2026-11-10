@@ -29,8 +29,8 @@ namespace SuperSoundSliderThingPlus.Integrations.Harmony
         {
             if (___m_audioSource == null) return;
             SoundEntry entry = Entries.GetValue(__instance, Classify);
-            float factor = SoundLevels.Factor(entry.Category);
-            if (factor < 1f) ___m_audioSource.volume *= factor;
+            float factor = SoundLevels.Factor(entry.Category) * LoudnessEqualizer.GainFor(___m_audioSource.clip);
+            if (factor != 1f) ___m_audioSource.volume *= factor;
         }
 
         private static SoundEntry ClassifyNew(ZSFX sfx)
