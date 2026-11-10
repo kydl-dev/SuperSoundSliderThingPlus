@@ -1,0 +1,18 @@
+<Project>
+  <!--
+    BenchmarkDotNet suite of the mod (PROJECT_RULES 30, skill `microbenchmarking`). Its own props file on purpose: the NUnit / Test SDK
+    settings of tests\Directory.Build.props must not reach this project (the nearest Directory.Build.props wins).
+    Same rules as the other test projects: net48 (the game's Mono is closest to it), packages are restored INTO tests\.nuget\packages,
+    game DLLs come from <workspace>\Claude\ref.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <RestorePackagesPath>$(MSBuildThisFileDirectory)..\.nuget\packages</RestorePackagesPath>
+    <ValheimRefs Condition="'$(ValheimRefs)' == ''">$(MSBuildThisFileDirectory)..\..\..\..\Claude\ref</ValheimRefs>
+    <AutomaticallyUseReferenceAssemblyPackages>true</AutomaticallyUseReferenceAssemblyPackages>
+  </PropertyGroup>
+</Project>

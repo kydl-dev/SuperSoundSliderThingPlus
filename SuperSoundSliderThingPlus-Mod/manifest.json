@@ -1,0 +1,11 @@
+{
+  "name": "SuperSoundSliderThingPlus",
+  "version_number": "0.1.0",
+  "website_url": "",
+  "description": "Client-side audio control: one master mute slider scales per-category sliders (sound effects, weather, wolf pups, shield generator, chicken love) and evens out loudness across game sounds. Master and category sliders are in the KY hub (F6).",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2360",
+    "ValheimModding-Jotunn-2.30.2",
+    "KydlDev-KydlCore-1.2.0"
+  ]
+}

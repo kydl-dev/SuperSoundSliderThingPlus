@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Benchmarks of the mod's game-free rules (PROJECT_RULES 30, skill microbenchmarking in .claude\skills; read its references folder before writing
+       benchmarks). The pure files are linked like in the unit-test project, so the benchmarks measure the very code the mod ships. Run from this
+       folder, Release only: dotnet run -c Release, then the BenchmarkDotNet flags filter and job after a double dash. Always a filter (the
+       switcher asks interactively otherwise); output into a file. Report: BenchmarkDotNet.Artifacts\results\*-report-github.md; keep the numbers in
+       ..\_quality\benchmarks.md. Visual Studio is not needed. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>SuperSoundSliderThingPlus.Benchmarks</AssemblyName>
+    <RootNamespace>SuperSoundSliderThingPlus.Benchmarks</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- KydlCore.Core (shared pure contracts): the mod's pure files use it -->
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\..\KydlCore\KydlCore-Mod\src\Shared\Core\**\*.cs" Link="Kydl\Core\%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- the mod's pure layers (Domain / Application / Execution): everything linked must compile without Unity. Add single files instead if a layer drags in the engine. -->
+    <Compile Include="..\..\src\Features\*\Domain\**\*.cs" Link="Mod\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- version: dotnet add package BenchmarkDotNet resolves the newest one; do not hand-write an older version -->
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+  </ItemGroup>
+</Project>
