@@ -1,6 +1,6 @@
 {
   "name": "mute-factors",
-  "description": "The live factor is (1 - master) x (1 - category) for every category",
+  "description": "The live factor of a category is 1 - its own mute (the master is the game's volume, not part of it)",
   "timeout": 60,
   "steps": [
     {
@@ -8,15 +8,6 @@
       "name": "SuperSoundSliderThingPlus.arena",
       "contains": "arena at",
       "label": "start on the arena spot"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "Master",
-        "value": 50
-      },
-      "contains": "Success"
     },
     {
       "do": "hook",
@@ -33,8 +24,8 @@
       "args": {
         "category": "WolfPup"
       },
-      "expect": 0.25,
-      "label": "0.5 x 0.5"
+      "expect": 0.5,
+      "label": "category 50 -> 0.5"
     },
     {
       "do": "hook",
@@ -42,14 +33,14 @@
       "args": {
         "category": "Weather"
       },
-      "expect": 0.5,
-      "label": "master only"
+      "expect": 1,
+      "label": "others untouched"
     },
     {
       "do": "hook",
       "name": "SuperSoundSliderThingPlus.mute.set",
       "args": {
-        "slider": "Master",
+        "slider": "WolfPup",
         "value": 100
       },
       "contains": "Success"
@@ -58,19 +49,10 @@
       "do": "hook",
       "name": "SuperSoundSliderThingPlus.sound.factor",
       "args": {
-        "category": "Effects"
+        "category": "WolfPup"
       },
       "expect": 0,
-      "label": "master 100 mutes all"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "Master",
-        "value": 0
-      },
-      "contains": "Success"
+      "label": "category 100 mutes it"
     },
     {
       "do": "hook",
@@ -85,7 +67,7 @@
       "do": "hook",
       "name": "SuperSoundSliderThingPlus.sound.factor",
       "args": {
-        "category": "ChickenLove"
+        "category": "WolfPup"
       },
       "expect": 1,
       "label": "back to full loudness"

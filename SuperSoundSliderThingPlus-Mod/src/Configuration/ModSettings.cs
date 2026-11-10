@@ -21,7 +21,7 @@ namespace SuperSoundSliderThingPlus.Configuration
         // [General] the sliders (D-004, D-011): every one is a MUTE level in percent, 0 = full loudness, 100 = muted; the master scales all others
         public static ConfigEntry<float> MasterMute, EffectsMute, WeatherMute, WolfPupMute, ShieldGeneratorMute, ChickenLoveMute, PortalMute;
         // [General] matching (D-005 step 2): off by default, the player switches it on
-        public static ConfigEntry<bool> EqualizeLoudness;
+        public static ConfigEntry<bool> EqualizeLoudness, DefaultsApplied;
         // [DebugLog]
         public static ConfigEntry<bool> DebugLog;
 
@@ -65,6 +65,7 @@ namespace SuperSoundSliderThingPlus.Configuration
             ShieldGeneratorMute = BindMute(c, "ShieldGeneratorMute", "Mute level in percent for shield generator sounds: 0 = full loudness, 100 = muted.");
             PortalMute = BindMute(c, "PortalMute", "Mute level in percent for portal sounds: 0 = full loudness, 100 = muted.");
             EqualizeLoudness = c.Bind("General", "EqualizeLoudness", false, "Match the loudness of sounds: every sound clip is measured once and scaled toward one target loudness, so loud sounds come down and quiet ones come up. Off = the game's own balance.");
+            DefaultsApplied = c.Bind("General", "DefaultsApplied", false, "Set to true once the first world entry has set the category sliders to 50%. Set it to false to apply those starting values once more.");
             ChickenLoveMute = BindMute(c, "ChickenLoveMute", "Mute level in percent for the chicken love sound: 0 = full loudness, 100 = muted.");
 
             ConfigTools.ApplyCommaFix(c, savedLines);    // after every Bind: "3,5" typed by hand means 3.5, not 35
@@ -72,7 +73,7 @@ namespace SuperSoundSliderThingPlus.Configuration
 
             EnableAll.SettingChanged += (s, e) => ModLog.Info("Config: EnableAll = " + EnableAll.Value + (EnableAll.Value ? ", the mod is on" : ", the mod is inert (no effects)"));
             ModLog.Verbose("Config: bound (EnableAll " + EnableAll.Value + ", debug log " + DebugLog.Value + ")");
-            return EnableAll != null && DebugLog != null && MasterMute != null && ChickenLoveMute != null;
+            return EnableAll != null && DebugLog != null && MasterMute != null && ChickenLoveMute != null && DefaultsApplied != null;
         }
 
         private static ConfigEntry<float> BindMute(ConfigFile c, string key, string description)

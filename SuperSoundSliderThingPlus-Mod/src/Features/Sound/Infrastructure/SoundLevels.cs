@@ -17,7 +17,8 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
         {
             SoundFeature feature = SoundFeature.Instance;
             if (feature == null || !feature.Running || ModSettings.MasterMute == null) return 1f;
-            var r = SoundMixRules.Factor(ModSettings.MasterMute.Value, MuteOf(category));
+            // the master mute is the game's own master volume (D-017): it already scales every sound through the mixer, so only the category counts here
+            var r = SoundMixRules.Factor(SoundMixRules.MinMute, MuteOf(category));
             if (!r.IsSuccess) ModLog.Warn("SoundLevels: " + category + " factor rejected - " + r.Reason + " (the sound is left alone)");
             return r.IsSuccess ? r.Value : 1f;
         }

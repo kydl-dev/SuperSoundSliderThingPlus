@@ -68,6 +68,12 @@
     },
     {
       "guid": "com.kydldev.SuperSoundSliderThingPlus",
+      "section": "General",
+      "key": "DefaultsApplied",
+      "value": "true"
+    },
+    {
+      "guid": "com.kydldev.SuperSoundSliderThingPlus",
       "section": "DebugLog",
       "key": "Enable",
       "value": "true"
@@ -92,6 +98,7 @@
     "mute-master",
     "mute-isolated",
     "mute-portal",
-    "equalize"
+    "equalize",
+    "first-run-defaults"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "mute-master",
-  "description": "Master slider at 100 silences any sound",
+  "description": "The master slider IS the game's master volume: slider -> game, game -> slider, and it silences the mixer",
   "timeout": 60,
   "steps": [
     {
@@ -11,21 +11,7 @@
     },
     {
       "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_thunder"
-      },
-      "contains": "playing",
-      "label": "probe plays"
-    },
-    {
-      "do": "wait",
-      "until": {
-        "check": "hook",
-        "name": "SuperSoundSliderThingPlus.sound.probeAudible",
-        "expect": true
-      },
-      "timeout": 5
+      "name": "SuperSoundSliderThingPlus.volume.save"
     },
     {
       "do": "hook",
@@ -37,13 +23,16 @@
       "contains": "Success"
     },
     {
-      "do": "wait",
-      "until": {
-        "check": "hook",
-        "name": "SuperSoundSliderThingPlus.sound.probeSilent",
-        "expect": true
-      },
-      "timeout": 5
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.game",
+      "expect": 0,
+      "label": "slider 100 -> game volume 0"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.sfxSilent",
+      "expect": true,
+      "label": "mixer silent"
     },
     {
       "do": "hook",
@@ -55,17 +44,61 @@
       "contains": "Success"
     },
     {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.game",
+      "expect": 1,
+      "label": "slider 0 -> game volume 1"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.sfxAudible",
+      "expect": true,
+      "label": "mixer audible"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 25
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.game",
+      "expect": 0.75,
+      "label": "slider 25 -> game volume 0.75"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.setGame",
+      "args": {
+        "value": 0.4
+      },
+      "contains": "stored",
+      "label": "player confirms 40% in the settings"
+    },
+    {
       "do": "wait",
       "until": {
         "check": "hook",
-        "name": "SuperSoundSliderThingPlus.sound.probeAudible",
-        "expect": true
+        "name": "SuperSoundSliderThingPlus.mute.value",
+        "expect": 60,
+        "args": {
+          "slider": "Master"
+        }
       },
       "timeout": 5
     },
     {
       "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
+      "name": "SuperSoundSliderThingPlus.volume.restore",
+      "contains": "restored"
+    },
+    {
+      "do": "wait",
+      "seconds": 1
     }
   ],
   "asserts": [

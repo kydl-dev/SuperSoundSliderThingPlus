@@ -77,7 +77,7 @@
       "do": "hook",
       "name": "SuperSoundSliderThingPlus.mute.value",
       "args": {
-        "slider": "Master"
+        "slider": "ChickenLove"
       },
       "expect": 0,
       "label": "other sliders untouched"

@@ -1,0 +1,129 @@
+{
+  "name": "first-run-defaults",
+  "description": "First start after install the category sliders start at 50; after that the player's values stand",
+  "timeout": 60,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at",
+      "label": "start on the arena spot"
+    },
+    {
+      "do": "setConfig",
+      "values": {
+        "General/DefaultsApplied": false
+      }
+    },
+    {
+      "do": "wait",
+      "until": {
+        "check": "hook",
+        "name": "SuperSoundSliderThingPlus.mute.value",
+        "expect": 50,
+        "args": {
+          "slider": "Weather"
+        }
+      },
+      "timeout": 5
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.value",
+      "args": {
+        "slider": "ChickenLove"
+      },
+      "expect": 50
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.value",
+      "args": {
+        "slider": "Portal"
+      },
+      "expect": 50
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Weather",
+        "value": 20
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 2
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.value",
+      "args": {
+        "slider": "Weather"
+      },
+      "expect": 20,
+      "label": "the player's value stands"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Weather",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Effects",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "WolfPup",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ShieldGenerator",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ChickenLove",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Portal",
+        "value": 0
+      },
+      "contains": "Success"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

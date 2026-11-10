@@ -109,6 +109,46 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
             return "gain " + gain.ToString("F2") + " rms " + rms.ToString("F4");
         }
 
+        /// <summary>The game's own master volume (the saved preference, 0..1).</summary>
+        [TestHook("SuperSoundSliderThingPlus.volume.game")]
+        static double VolumeGame() { return Math.Round(SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Master(), 3); }
+
+        /// <summary>Simulates the player confirming a new master volume in the game's settings (stores the preference only; the mod must notice it).</summary>
+        [TestHook("SuperSoundSliderThingPlus.volume.setGame")]
+        static string VolumeSetGame(double value)
+        {
+            PlatformPrefs.SetFloat(SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.MasterKey, (float)value);
+            return "stored " + value;
+        }
+
+        private static float _savedGame = float.NaN;
+
+        /// <summary>Remembers the player's real master volume before a test changes it.</summary>
+        [TestHook("SuperSoundSliderThingPlus.volume.save")]
+        static double VolumeSave()
+        {
+            _savedGame = SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Master();
+            return _savedGame;
+        }
+
+        /// <summary>Puts the remembered master volume back (and the mod follows it).</summary>
+        [TestHook("SuperSoundSliderThingPlus.volume.restore")]
+        static string VolumeRestore()
+        {
+            if (float.IsNaN(_savedGame)) return "Failed: nothing saved";
+            SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Write(_savedGame);
+            SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Save();
+            return "restored " + _savedGame.ToString("F3");
+        }
+
+        /// <summary>Is the mixer's SFX volume (game master x sfx) at zero?</summary>
+        [TestHook("SuperSoundSliderThingPlus.volume.sfxSilent")]
+        static bool VolumeSfxSilent() { return SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Sfx() < 0.001f; }
+
+        /// <summary>Is the mixer's SFX volume audible (above zero)?</summary>
+        [TestHook("SuperSoundSliderThingPlus.volume.sfxAudible")]
+        static bool VolumeSfxAudible() { return SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Sfx() > 0.001f; }
+
         /// <summary>Removes the probe (also done by the next Play).</summary>
         [TestHook("SuperSoundSliderThingPlus.sound.clear")]
         static bool Clear()
