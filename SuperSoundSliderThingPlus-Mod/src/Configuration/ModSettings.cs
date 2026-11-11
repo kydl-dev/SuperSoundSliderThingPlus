@@ -19,7 +19,7 @@ namespace SuperSoundSliderThingPlus.Configuration
         // One functionality = one config section with its own switch (PROJECT_RULES 11), only when the mod has several of them, e.g.:
         //   public static ConfigEntry<bool> ColoursEnable;   // c.Bind("Colours", "Enable", true, "...");  on only when On && ColoursEnable.Value
         // [General] the sliders (D-004, D-011): every one is a MUTE level in percent, 0 = full loudness, 100 = muted; the master scales all others
-        public static ConfigEntry<float> MasterMute, EffectsMute, WeatherMute, WolfPupMute, ShieldGeneratorMute, ChickenLoveMute, PortalMute;
+        public static ConfigEntry<float> MasterMute, EffectsMute, WeatherMute, WolfPupMute, ShieldGeneratorMute, ChickenLoveMute, PortalMute, MusicMute;
         // [General] matching (D-005 step 2): off by default, the player switches it on
         public static ConfigEntry<bool> EqualizeLoudness, DefaultsApplied;
         // [DebugLog]
@@ -59,13 +59,14 @@ namespace SuperSoundSliderThingPlus.Configuration
                 "Writes detailed lines about everything the mod does to the BepInEx log (for bug reports). Leave off while playing normally.");
 
             MasterMute = BindMute(c, "MasterMute", "Master mute level in percent: 0 = every sound at full loudness, 100 = everything muted. Scales all the sliders below.");
-            EffectsMute = BindMute(c, "SoundEffectsMute", "Mute level in percent for sound effects that have no slider of their own: 0 = full loudness, 100 = muted.");
+            EffectsMute = BindMute(c, "SoundEffectsMute", "Mute level in percent for all sound effects that have no slider of their own (the game's own sound effects slider follows it): 0 = full loudness, 100 = muted.");
             WeatherMute = BindMute(c, "WeatherMute", "Mute level in percent for world weather sounds (rain, wind, thunder): 0 = full loudness, 100 = muted.");
             WolfPupMute = BindMute(c, "WolfPupMute", "Mute level in percent for wolf pup sounds: 0 = full loudness, 100 = muted.");
             ShieldGeneratorMute = BindMute(c, "ShieldGeneratorMute", "Mute level in percent for shield generator sounds: 0 = full loudness, 100 = muted.");
             PortalMute = BindMute(c, "PortalMute", "Mute level in percent for portal sounds: 0 = full loudness, 100 = muted.");
             EqualizeLoudness = c.Bind("General", "EqualizeLoudness", false, "Match the loudness of sounds: every sound clip is measured once and scaled toward one target loudness, so loud sounds come down and quiet ones come up. Off = the game's own balance.");
             DefaultsApplied = c.Bind("General", "DefaultsApplied", false, "Set to true once the first world entry has set the category sliders to 50%. Set it to false to apply those starting values once more.");
+            MusicMute = BindMute(c, "MusicMute", "Mute level in percent for the music (the game's own music slider): 0 = full loudness, 100 = muted.");
             ChickenLoveMute = BindMute(c, "ChickenLoveMute", "Mute level in percent for the chicken love sound: 0 = full loudness, 100 = muted.");
 
             ConfigTools.ApplyCommaFix(c, savedLines);    // after every Bind: "3,5" typed by hand means 3.5, not 35

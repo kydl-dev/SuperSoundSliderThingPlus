@@ -1,0 +1,186 @@
+{
+  "name": "sync-volumes",
+  "description": "Music and Sound effects sliders are the game's own music and sfx volumes, synced both ways; the mixer is not attenuated twice",
+  "timeout": 90,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.save"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Music",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.getKey",
+      "args": {
+        "key": "MusicVolume"
+      },
+      "expect": 0,
+      "label": "music slider 100 -> game music volume 0"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.music",
+      "expect": 0,
+      "label": "music playing at 0"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Music",
+        "value": 25
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.getKey",
+      "args": {
+        "key": "MusicVolume"
+      },
+      "expect": 0.75
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.music",
+      "expect": 0.75
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.setKey",
+      "args": {
+        "key": "MusicVolume",
+        "value": 0.4
+      },
+      "contains": "stored",
+      "label": "player moves the game's music slider to 40%"
+    },
+    {
+      "do": "wait",
+      "until": {
+        "check": "hook",
+        "name": "SuperSoundSliderThingPlus.mute.value",
+        "expect": 60,
+        "args": {
+          "slider": "Music"
+        }
+      },
+      "timeout": 5
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Effects",
+        "value": 40
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.getKey",
+      "args": {
+        "key": "SfxVolume"
+      },
+      "expect": 0.6,
+      "label": "our Sound effects 40 -> game sfx volume 0.6"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.mixer",
+      "expect": 1,
+      "label": "mixer stays at master only (no double attenuation)"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.setKey",
+      "args": {
+        "key": "SfxVolume",
+        "value": 0.2
+      },
+      "contains": "stored",
+      "label": "player moves the game's sfx slider to 20%"
+    },
+    {
+      "do": "wait",
+      "until": {
+        "check": "hook",
+        "name": "SuperSoundSliderThingPlus.mute.value",
+        "expect": 80,
+        "args": {
+          "slider": "Effects"
+        }
+      },
+      "timeout": 5
+    },
+    {
+      "do": "wait",
+      "seconds": 1
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.mixer",
+      "expect": 1,
+      "label": "mixer put back to master only"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Effects",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Music",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.getKey",
+      "args": {
+        "key": "SfxVolume"
+      },
+      "expect": 1
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.restore",
+      "contains": "restored"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

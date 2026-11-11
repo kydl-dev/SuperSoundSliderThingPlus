@@ -63,6 +63,12 @@
                             {
                                 "guid":  "com.kydldev.SuperSoundSliderThingPlus",
                                 "section":  "General",
+                                "key":  "MusicMute",
+                                "value":  "0"
+                            },
+                            {
+                                "guid":  "com.kydldev.SuperSoundSliderThingPlus",
+                                "section":  "General",
                                 "key":  "EqualizeLoudness",
                                 "value":  "false"
                             },
@@ -111,6 +117,7 @@
                   "sweep-master",
                   "mobs-sounds",
                   "mobs-attacks",
-                  "mobs-tour"
+                  "mobs-tour",
+        "sync-volumes"
               ]
 }

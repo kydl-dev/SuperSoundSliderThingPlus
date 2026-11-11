@@ -33,7 +33,7 @@ namespace SuperSoundSliderThingPlus.Ui
         // sample values for the preview: master 20%, the categories spread out so every slider position is visible
         static SoundPage SamplePage()
         {
-            var keys = new[] { "master", "effects", "weather", "wolfpup", "shieldgenerator", "chickenlove", "portal" };
+            var keys = new[] { "master", "music", "effects", "weather", "wolfpup", "shieldgenerator", "chickenlove", "portal" };
             var values = new[] { 20f, 0f, 50f, 100f, 25f, 75f };
             var rows = new System.Collections.Generic.List<SoundSliderRow>();
             for (int i = 0; i < keys.Length; i++)

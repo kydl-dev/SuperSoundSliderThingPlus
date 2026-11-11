@@ -16,7 +16,7 @@ namespace SuperSoundSliderThingPlus.Presentation.Hub.ViewModels
     {
         private static readonly SoundSlider[] Order =
         {
-            SoundSlider.Master, SoundSlider.Effects, SoundSlider.Weather, SoundSlider.WolfPup, SoundSlider.ShieldGenerator, SoundSlider.ChickenLove, SoundSlider.Portal
+            SoundSlider.Master, SoundSlider.Music, SoundSlider.Effects, SoundSlider.Weather, SoundSlider.WolfPup, SoundSlider.ShieldGenerator, SoundSlider.ChickenLove, SoundSlider.Portal
         };
 
         internal static SoundPage Build(CommandDispatcher commands)

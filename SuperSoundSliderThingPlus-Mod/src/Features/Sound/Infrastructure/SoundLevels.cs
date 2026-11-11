@@ -37,6 +37,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
                 case SoundSlider.ShieldGenerator: return ModSettings.ShieldGeneratorMute;
                 case SoundSlider.ChickenLove: return ModSettings.ChickenLoveMute;
                 case SoundSlider.Portal: return ModSettings.PortalMute;
+                case SoundSlider.Music: return ModSettings.MusicMute;
                 default: return ModSettings.EffectsMute;
             }
         }

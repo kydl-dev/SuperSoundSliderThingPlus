@@ -160,6 +160,29 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
             return "stored " + value;
         }
 
+        /// <summary>One stored game volume by preference key (MasterVolume, SfxVolume, MusicVolume), 0..1.</summary>
+        [TestHook("SuperSoundSliderThingPlus.volume.getKey")]
+        static double VolumeGetKey(string key) { return Math.Round(SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Get(key), 3); }
+
+        /// <summary>Simulates the game's own audio settings: stores one volume and applies it the way the game does (SFX: master x sfx straight into the mixer).</summary>
+        [TestHook("SuperSoundSliderThingPlus.volume.setKey")]
+        static string VolumeSetKey(string key, double value)
+        {
+            PlatformPrefs.SetFloat(key, (float)value);
+            var g = SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Get;
+            AudioMan.SetSFXVolume(g(SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.MasterKey) * g(SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.SfxKey));
+            MusicMan.m_masterMusicVolume = g(SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.MasterKey) * g(SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.MusicKey);
+            return "stored " + key + " " + value;
+        }
+
+        /// <summary>The music volume the game plays at right now (master x music).</summary>
+        [TestHook("SuperSoundSliderThingPlus.volume.music")]
+        static double VolumeMusic() { return Math.Round(MusicMan.m_masterMusicVolume, 3); }
+
+        /// <summary>The mixer's SFX volume right now.</summary>
+        [TestHook("SuperSoundSliderThingPlus.volume.mixer")]
+        static double VolumeMixer() { return Math.Round(SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Sfx(), 3); }
+
         private static float _savedGame = float.NaN;
 
         /// <summary>Remembers the player's real master volume before a test changes it.</summary>
@@ -175,7 +198,7 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
         static string VolumeRestore()
         {
             if (float.IsNaN(_savedGame)) return "Failed: nothing saved";
-            SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Write(_savedGame);
+            SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Write(SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.MasterKey, _savedGame);
             SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Save();
             return "restored " + _savedGame.ToString("F3");
         }

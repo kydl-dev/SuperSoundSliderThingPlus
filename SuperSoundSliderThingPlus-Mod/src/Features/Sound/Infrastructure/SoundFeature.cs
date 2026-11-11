@@ -24,8 +24,11 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
     {
         internal const string FeatureId = "sound";
         internal const float FirstRunMute = 50f, TickSeconds = 0.5f, SaveDelaySeconds = 1.5f;
+        // the first-run 50% applies to the category sliders; Effects, Music and Master follow the game's own volumes instead
         private static readonly SoundSlider[] Categories =
-            { SoundSlider.Effects, SoundSlider.Weather, SoundSlider.WolfPup, SoundSlider.ShieldGenerator, SoundSlider.ChickenLove, SoundSlider.Portal };
+            { SoundSlider.Weather, SoundSlider.WolfPup, SoundSlider.ShieldGenerator, SoundSlider.ChickenLove, SoundSlider.Portal };
+        // the sliders that ARE a game volume (D-017, D-023): mute = (1 - volume) x 100, synced both ways
+        private static readonly SoundSlider[] Synced = { SoundSlider.Master, SoundSlider.Music, SoundSlider.Effects };
 
         private readonly DependencyRegistry _deps;
         private bool _running, _pulling;
@@ -52,8 +55,11 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
         {
             _running = true;
             ModSettings.MasterMute.SettingChanged += OnMasterChanged;
+            ModSettings.MusicMute.SettingChanged += OnMusicChanged;
+            ModSettings.EffectsMute.SettingChanged += OnEffectsChanged;
             bool tab = HubTabs.AddSoundTab(() => { Pull(); return SoundPageModel.Build(_deps.Commands); });
             Pull();
+            GameVolume.Apply(true);
             ApplyFirstRunDefaults();
             ModLog.State("sound feature", "stopped", "started", "patches act, master follows the game volume, hub tab added " + tab);
             return _running && tab;
@@ -63,23 +69,33 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
         {
             _running = false;
             ModSettings.MasterMute.SettingChanged -= OnMasterChanged;
+            ModSettings.MusicMute.SettingChanged -= OnMusicChanged;
+            ModSettings.EffectsMute.SettingChanged -= OnEffectsChanged;
+            GameVolume.Apply(false);   // the game's own sound effects volume applies again
             bool gone = HubTabs.RemoveSoundTab();
             ModLog.State("sound feature", "started", "stopped", "patches leave the sounds alone, hub tab removed " + gone);
             return !_running && gone;
         }
 
-        /// <summary>Game -> slider: the slider takes the game's master volume. Expected outcome: true when the slider already matches or was set.</summary>
+        /// <summary>Game -> slider: the master, music and sound effects sliders take the game's volumes. Expected outcome: true when every slider matches or was set.</summary>
         internal bool Pull()
         {
             if (!_running) return false;
-            var mute = MasterVolumeRules.MuteFromVolume(GameVolume.Master());
+            bool ok = true;
+            foreach (SoundSlider slider in Synced) ok &= PullOne(slider);
+            return ok;
+        }
+
+        private bool PullOne(SoundSlider slider)
+        {
+            var mute = MasterVolumeRules.MuteFromVolume(GameVolume.Get(KeyOf(slider)));
             if (!mute.IsSuccess) return false;
-            if (MasterVolumeRules.SameMute(SoundLevels.MuteOf(SoundSlider.Master), mute.Value)) return true;
+            if (MasterVolumeRules.SameMute(SoundLevels.MuteOf(slider), mute.Value)) return true;
             _pulling = true;   // the change event must not echo the value back into the game
             try
             {
-                var r = SoundCommands.SetMute(_deps.Commands, SoundSlider.Master, mute.Value);
-                ModLog.State("master mute", "slider", "game volume", "pulled " + mute.Value.ToString("0.#") + " from the game: " + r);
+                var r = SoundCommands.SetMute(_deps.Commands, slider, mute.Value);
+                ModLog.State(slider + " mute", "slider", "game volume", "pulled " + mute.Value.ToString("0.#") + " from the game: " + r);
                 return r.IsSuccess;
             }
             finally { _pulling = false; }
@@ -91,6 +107,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
             if (!_running || Time.unscaledTime < _nextTick) return;
             _nextTick = Time.unscaledTime + TickSeconds;
             Pull();
+            if (GameVolume.Reassert()) ModLog.Verbose("SoundFeature: the game re-applied its sound effects volume, set back to master only (the slider does that per sound)");
             ApplyFirstRunDefaults();
             if (_saveAt >= 0f && Time.unscaledTime >= _saveAt)
             {
@@ -101,16 +118,31 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
                 + ", first-run defaults " + (ModSettings.DefaultsApplied.Value ? "done" : "pending"));
         }
 
-        /// <summary>Slider -> game (the hub, the settings tab or the config file changed the master mute).</summary>
-        private void OnMasterChanged(object sender, System.EventArgs e)
+        /// <summary>Slider -> game (the hub, the settings tab or the config file changed a synced slider).</summary>
+        private void OnMasterChanged(object sender, System.EventArgs e) => Push(SoundSlider.Master);
+        private void OnMusicChanged(object sender, System.EventArgs e) => Push(SoundSlider.Music);
+        private void OnEffectsChanged(object sender, System.EventArgs e) => Push(SoundSlider.Effects);
+
+        private void Push(SoundSlider slider)
         {
             if (!_running || _pulling) return;
-            var volume = MasterVolumeRules.VolumeFromMute(SoundLevels.MuteOf(SoundSlider.Master));
+            var volume = MasterVolumeRules.VolumeFromMute(SoundLevels.MuteOf(slider));
             if (!volume.IsSuccess) return;
-            if (MasterVolumeRules.SameMute(MasterVolumeRules.MuteFromVolume(GameVolume.Master()).Value, SoundLevels.MuteOf(SoundSlider.Master))) return;
-            GameVolume.Write(volume.Value);
+            string key = KeyOf(slider);
+            if (MasterVolumeRules.SameMute(MasterVolumeRules.MuteFromVolume(GameVolume.Get(key)).Value, SoundLevels.MuteOf(slider))) return;
+            GameVolume.Write(key, volume.Value);
             _saveAt = Time.unscaledTime + SaveDelaySeconds;
-            ModLog.State("game master volume", "game", "slider", "pushed " + volume.Value.ToString("F2") + " into the game's master volume");
+            ModLog.State("game " + key, "game", "slider", "pushed " + volume.Value.ToString("F2") + " into the game's " + key);
+        }
+
+        private static string KeyOf(SoundSlider slider)
+        {
+            switch (slider)
+            {
+                case SoundSlider.Music: return GameVolume.MusicKey;
+                case SoundSlider.Effects: return GameVolume.SfxKey;
+                default: return GameVolume.MasterKey;
+            }
         }
 
         // D-018: the first time the mod runs after install (no DefaultsApplied yet) the category sliders start at 50; after that the player's values stand.

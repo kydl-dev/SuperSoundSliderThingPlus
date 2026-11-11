@@ -23,6 +23,7 @@ namespace SuperSoundSliderThingPlus.Ui
             { "supersoundsliderthingplus_slider_shieldgenerator", "Shield generator" },
             { "supersoundsliderthingplus_slider_chickenlove", "Chicken love" },
             { "supersoundsliderthingplus_slider_portal", "Portals" },
+            { "supersoundsliderthingplus_slider_music", "Music" },
             { "supersoundsliderthingplus_tab_settings", "Settings" },
             { "supersoundsliderthingplus_tab_example_section", "Example" },
             { "supersoundsliderthingplus_tab_example_note", "This is the starting tab of the mod in the KY hub (F6). Replace its content in ExampleTabView." },

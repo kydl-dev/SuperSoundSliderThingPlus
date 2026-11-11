@@ -1,6 +1,6 @@
 namespace SuperSoundSliderThingPlus.Features.Sound.Domain
 {
-    /// <summary>The sliders of the sound page: the master and one per <see cref="SoundCategory"/>. All of them are mute levels (D-011).</summary>
+    /// <summary>The sliders of the sound page: the master, the music and one per <see cref="SoundCategory"/>. All of them are mute levels (D-011).</summary>
     internal enum SoundSlider
     {
         Master,
@@ -9,6 +9,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
         WolfPup,
         ShieldGenerator,
         ChickenLove,
-        Portal
+        Portal,
+        Music
     }
 }
