@@ -106,6 +106,8 @@
                   "audit-shield",
                   "audit-portal",
                   "audit-chicken",
-                  "sweep-master"
+                  "audit-shield-hum-checked",
+                  "final-mix-checked",
+                  "sweep-master-checked"
               ]
 }

@@ -246,6 +246,31 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
             return ok;
         }
 
+        /// <summary>The shield dome hum source the shield-hum patch tracks (clip, base volume the game gave it, volume after the mod).</summary>
+        [TestHook("SuperSoundSliderThingPlus.hum.info")]
+        static string HumInfo()
+        {
+            float baseVolume, applied;
+            string clip;
+            if (!SuperSoundSliderThingPlus.Integrations.Harmony.ShieldHumPatch.TryGetLast(out baseVolume, out applied, out clip)) return "Failed: the patch has not seen the hum source";
+            string text = "hum clip " + clip + " base " + baseVolume.ToString("F3") + " applied " + applied.ToString("F3");
+            ModLog.Info("SoundTestHooks: HUM " + text);
+            return text;
+        }
+
+        /// <summary>Is the hum's volume after the mod `expected` x the volume the game gave it?</summary>
+        [TestHook("SuperSoundSliderThingPlus.hum.ratioNear")]
+        static bool HumRatioNear(double expected, double tolerance)
+        {
+            float baseVolume, applied;
+            string clip;
+            if (!SuperSoundSliderThingPlus.Integrations.Harmony.ShieldHumPatch.TryGetLast(out baseVolume, out applied, out clip) || baseVolume <= 0.0005f) return false;
+            double ratio = applied / baseVolume;
+            bool ok = Math.Abs(ratio - expected) <= tolerance;
+            ModLog.Info("SoundTestHooks: HUM " + clip + " base " + baseVolume.ToString("F3") + " applied " + applied.ToString("F3") + " ratio " + ratio.ToString("F3") + " expected " + expected + " -> " + (ok ? "ok" : "WRONG"));
+            return ok;
+        }
+
         /// <summary>Starts the all-sounds sweep (every sound prefab is played for a few frames; one SWEEP line per sound in the log).</summary>
         [TestHook("SuperSoundSliderThingPlus.sweep.start")]
         static bool SweepStart() { return SoundSweeper.Begin(); }

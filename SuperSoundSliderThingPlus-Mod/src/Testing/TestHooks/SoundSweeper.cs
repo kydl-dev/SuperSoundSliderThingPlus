@@ -17,6 +17,7 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
     internal sealed class SoundSweeper : MonoBehaviour
     {
         private const int FramesPerSound = 3;
+        private const float LateSeconds = 0.5f;
         private static SoundSweeper _current;
 
         internal bool Done { get; private set; }
@@ -47,7 +48,7 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
             prefabs.Sort((a, b) => string.CompareOrdinal(a.name, b.name));
             var groups = new SortedDictionary<string, int>();
             var categories = new SortedDictionary<string, int>();
-            int played = 0, notPlaying = 0, noGroup = 0, ratioWrong = 0;
+            int played = 0, notPlaying = 0, noGroup = 0, ratioWrong = 0, late = 0;
             Vector3 position = Player.m_localPlayer.transform.position + Player.m_localPlayer.transform.forward * 6f;
             ModLog.Info("SWEEP start: " + prefabs.Count + " sound prefabs, game master volume " + SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Master().ToString("F2"));
             foreach (GameObject prefab in prefabs)
@@ -58,6 +59,18 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
                 if (zsfx != null && !zsfx.m_playOnAwake) zsfx.Play();
                 for (int i = 0; i < FramesPerSound; i++) yield return null;
                 if (instance == null) continue;
+                // sounds with a start delay or a condition need longer: wait up to half a second until the source plays and the patch has handled it
+                float waited = 0f;
+                SoundCategory seenCategory;
+                float seenRaw, seenScaled;
+                while (waited < LateSeconds && (!source.isPlaying || !ZsfxCustomUpdatePatch.TryGetLast(zsfx, out seenCategory, out seenRaw, out seenScaled)))
+                {
+                    waited += Time.unscaledDeltaTime;
+                    yield return null;
+                    if (instance == null) break;
+                }
+                if (instance == null) continue;
+                if (waited > 0f) late++;
                 SoundCategory category;
                 float raw, scaled;
                 bool known = ZsfxCustomUpdatePatch.TryGetLast(zsfx, out category, out raw, out scaled);
@@ -72,14 +85,14 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
                 if (wrong) ratioWrong++;
                 Increment(groups, group);
                 Increment(categories, known ? category.ToString() : "unseen");
-                ModLog.Info("SWEEP " + prefab.name + " | group " + group + " | " + (playing ? "playing" : "not playing") + " | category " + (known ? category.ToString() : "unseen")
+                ModLog.Info("SWEEP " + prefab.name + " (root " + prefab.transform.root.name + ") | group " + group + " | " + (playing ? "playing" : "not playing") + " | category " + (known ? category.ToString() : "unseen")
                     + " | raw " + raw.ToString("F3") + " scaled " + scaled.ToString("F3") + " ratio " + ratio.ToString("F3") + " expected " + expected.ToString("F3") + (wrong ? " | WRONG" : string.Empty)
                     + " | played volume " + (scaled * SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Sfx()).ToString("F3") + " (scaled x mixer " + SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Sfx().ToString("F2") + ")");
                 Destroy(instance);
                 yield return null;
             }
             var sb = new StringBuilder();
-            sb.Append(played).Append(" sounds, ").Append(notPlaying).Append(" not playing, ").Append(noGroup).Append(" without a mixer group (the master cannot reach them), ")
+            sb.Append(played).Append(" sounds, ").Append(notPlaying).Append(" not playing even after waiting up to " + LateSeconds + " s (" + late + " needed the longer wait), ").Append(noGroup).Append(" without a mixer group (the master cannot reach them), ")
               .Append(ratioWrong).Append(" with a wrong category factor; groups ").Append(Join(groups)).Append("; categories ").Append(Join(categories));
             Summary = sb.ToString();
             ModLog.Info("SWEEP done: " + Summary);

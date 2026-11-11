@@ -1,0 +1,148 @@
+﻿{
+  "name": "audit-shield-hum-checked",
+  "description": "AUDIT: the shield dome hum (plain AudioSource, the wall loop) follows the shield generator slider",
+  "timeout": 60,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.hum.info",
+      "contains": "hum clip",
+      "label": "the patch tracks the hum source"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ShieldGenerator",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 0.3
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.hum.ratioNear",
+      "args": {
+        "expected": 1.0,
+        "tolerance": 0.02
+      },
+      "expect": true,
+      "label": "shield hum at 0% mute is 100% of the game's volume"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ShieldGenerator",
+        "value": 50
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 0.3
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.hum.ratioNear",
+      "args": {
+        "expected": 0.5,
+        "tolerance": 0.02
+      },
+      "expect": true,
+      "label": "shield hum at 50% mute is 50% of the game's volume"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ShieldGenerator",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 0.3
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.hum.ratioNear",
+      "args": {
+        "expected": 0.0,
+        "tolerance": 0.02
+      },
+      "expect": true,
+      "label": "shield hum at 100% mute is 0% of the game's volume"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ShieldGenerator",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 0.3
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.hum.ratioNear",
+      "args": {
+        "expected": 1.0,
+        "tolerance": 0.02
+      },
+      "expect": true,
+      "label": "shield hum at 0% mute is 100% of the game's volume"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Weather",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 0.3
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.hum.ratioNear",
+      "args": {
+        "expected": 1.0,
+        "tolerance": 0.02
+      },
+      "expect": true,
+      "label": "the weather slider does not touch the hum"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Weather",
+        "value": 0
+      },
+      "contains": "Success"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

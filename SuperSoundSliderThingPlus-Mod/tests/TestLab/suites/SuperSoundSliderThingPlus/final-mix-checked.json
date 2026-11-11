@@ -1,0 +1,380 @@
+﻿{
+  "name": "final-mix-checked",
+  "description": "AUDIT: the master's effect on the FINAL output (AudioListener.GetOutputData): a tone through each mixer group is measured at master 0 / 50 / 100",
+  "timeout": 180,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.tone",
+      "args": {
+        "group": "none"
+      },
+      "contains": "tone",
+      "label": "warm-up: the first listener read of a session is silent"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.level"
+    },
+    {
+      "do": "wait",
+      "seconds": 0.5
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.level"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.stop"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.tone",
+      "args": {
+        "group": "none"
+      },
+      "contains": "tone",
+      "label": "tone through none"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.5
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.mark",
+      "label": "level at master 0% mute"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 50
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.ratioNear",
+      "args": {
+        "expected": 1.0,
+        "tolerance": 0.12
+      },
+      "expect": true,
+      "label": "none at master 50% mute: unchanged (no mixer group)"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.ratioNear",
+      "args": {
+        "expected": 1.0,
+        "tolerance": 0.12
+      },
+      "expect": true,
+      "label": "none at master 100% mute: still audible (no mixer group)"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.stop"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.tone",
+      "args": {
+        "group": "SFX_LARGE"
+      },
+      "contains": "tone",
+      "label": "tone through SFX_LARGE"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.5
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.mark",
+      "label": "level at master 0% mute"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 50
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.ratioNear",
+      "args": {
+        "expected": 0.7071,
+        "tolerance": 0.12
+      },
+      "expect": true,
+      "label": "SFX_LARGE at master 50% mute: final output about 0.7 of full"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.ratioNear",
+      "args": {
+        "expected": 0.0,
+        "tolerance": 0.15
+      },
+      "expect": true,
+      "label": "SFX_LARGE at master 100% mute: silent (only the game's own quiet background left)"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.stop"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.tone",
+      "args": {
+        "group": "Ambient"
+      },
+      "contains": "tone",
+      "label": "tone through Ambient"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.5
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.mark",
+      "label": "level at master 0% mute"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 50
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.ratioNear",
+      "args": {
+        "expected": 0.7071,
+        "tolerance": 0.12
+      },
+      "expect": true,
+      "label": "Ambient at master 50% mute: final output about 0.7 of full"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.ratioNear",
+      "args": {
+        "expected": 0.0,
+        "tolerance": 0.15
+      },
+      "expect": true,
+      "label": "Ambient at master 100% mute: silent (only the game's own quiet background left)"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.stop"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.tone",
+      "args": {
+        "group": "GUI"
+      },
+      "contains": "tone",
+      "label": "tone through GUI"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.5
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.mark",
+      "label": "level at master 0% mute"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 50
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.ratioNear",
+      "args": {
+        "expected": 0.7071,
+        "tolerance": 0.12
+      },
+      "expect": true,
+      "label": "GUI at master 50% mute: final output about 0.7 of full"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.0
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.ratioNear",
+      "args": {
+        "expected": 0.0,
+        "tolerance": 0.15
+      },
+      "expect": true,
+      "label": "GUI at master 100% mute: silent (only the game's own quiet background left)"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mix.stop"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 100
+      },
+      "contains": "Success"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

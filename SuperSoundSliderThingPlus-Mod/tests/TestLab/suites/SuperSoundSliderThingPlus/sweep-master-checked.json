@@ -1,5 +1,5 @@
-{
-  "name": "sweep-master",
+﻿{
+  "name": "sweep-master-checked",
   "description": "AUDIT: every game sound effect is played with the master at 50%; the log lists which sounds reach a mixer group (follow the master) and the category and volume of each",
   "timeout": 320,
   "steps": [
