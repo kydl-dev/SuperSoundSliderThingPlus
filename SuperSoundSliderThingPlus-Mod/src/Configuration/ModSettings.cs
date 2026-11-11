@@ -64,7 +64,7 @@ namespace SuperSoundSliderThingPlus.Configuration
             WolfPupMute = BindMute(c, "WolfPupMute", "Mute level in percent for wolf pup sounds: 0 = full loudness, 100 = muted.");
             ShieldGeneratorMute = BindMute(c, "ShieldGeneratorMute", "Mute level in percent for shield generator sounds: 0 = full loudness, 100 = muted.");
             PortalMute = BindMute(c, "PortalMute", "Mute level in percent for portal sounds: 0 = full loudness, 100 = muted.");
-            EqualizeLoudness = c.Bind("General", "EqualizeLoudness", false, "Match the loudness of sounds: every sound clip is measured once and scaled toward one target loudness, so loud sounds come down and quiet ones come up. Off = the game's own balance.");
+            EqualizeLoudness = c.Bind("General", "EqualizeLoudness", true, "Match the loudness of sounds: every sound clip is measured once and scaled toward one target loudness, so loud sounds come down and quiet ones come up. Off = the game's own balance.");
             DefaultsApplied = c.Bind("General", "DefaultsApplied", false, "Set to true once the first world entry has set the category sliders to 50%. Set it to false to apply those starting values once more.");
             MusicMute = BindMute(c, "MusicMute", "Mute level in percent for the music (the game's own music slider): 0 = full loudness, 100 = muted.");
             ChickenLoveMute = BindMute(c, "ChickenLoveMute", "Mute level in percent for the chicken love sound: 0 = full loudness, 100 = muted.");
