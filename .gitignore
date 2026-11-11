@@ -95,3 +95,4 @@ CLAUDE.md
 # SonarQube scanner work files
 .sonarqube/
 **/tests/_quality/sonar-coverage/
+BenchmarkDotNet.Artifacts/
