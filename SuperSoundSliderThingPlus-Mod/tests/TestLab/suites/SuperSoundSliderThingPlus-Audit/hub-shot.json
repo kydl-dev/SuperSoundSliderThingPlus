@@ -1,0 +1,15 @@
+{
+  "name": "hub-shot",
+  "description": "Opens the mod's hub page (Sound tab with all eight rows incl. Music) and takes a picture through GameProbe; a person looks at it",
+  "timeout": 90,
+  "steps": [
+    { "do": "hook", "name": "SuperSoundSliderThingPlus.arena", "contains": "arena at", "label": "start on the arena spot" },
+    { "do": "hook", "name": "kc.hubOpen", "args": { "mod": "com.kydldev.SuperSoundSliderThingPlus" }, "expect": true },
+    { "do": "wait", "until": { "check": "hook", "name": "kc.hubIsOpen", "expect": true }, "timeout": 5 },
+    { "do": "wait", "seconds": 2 },
+    { "do": "invoke", "method": "Kydl.GameProbe.ProbeApi.Screenshot" },
+    { "do": "wait", "seconds": 2 },
+    { "do": "hook", "name": "kc.hubClose" }
+  ],
+  "asserts": [ { "check": "noErrors", "source": "SuperSoundSliderThingPlus" } ]
+}
