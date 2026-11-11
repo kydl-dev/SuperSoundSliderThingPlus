@@ -36,7 +36,7 @@
     <Using Include="NUnit.Framework" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\*.cs" LinkBase="Common" />
     <!-- KydlCore.Core (shared pure contracts in KydlCore\KydlCore-Mod\src\Shared\Core, MIGRATION_DECISIONS A9) is linked into every test project: the mod's pure files use it -->
-    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\KydlCore\KydlCore-Mod\src\Shared\Core\**\*.cs" Link="Kydl\Core\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\KydlCore\KydlCore-Mod\src\Shared\Core\**\*.cs" Link="Kydl\Core\%(RecursiveDir)%(Filename)%(Extension)" Condition="'$(KydlQuality)' != 'true'" />
     <Reference Include="BepInEx"><HintPath>$(ValheimRefs)\BepInEx.dll</HintPath><Private>true</Private></Reference>
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
@@ -45,6 +45,9 @@
        reference so Stryker.NET finds the code to mutate. Normal test runs keep using the built DLL in <Mod>-Mod\assets. -->
   <ItemGroup Condition="'$(KydlQuality)' == 'true'">
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\*.csproj" />
+    <!-- quality runs test the MUTATED mod assembly (not a linked copy of the sources): its internals are visible to the unit tests, the shared contracts
+         come from KydlCore.dll like in the mod -->
+    <Reference Include="KydlCore"><HintPath>$(MSBuildThisFileDirectory)..\..\..\KydlCore\KydlCore-Mod\assets\KydlCore.dll</HintPath></Reference>
   </ItemGroup>
 
   <!-- labdb (user 2026-11-10: every mod's test results go into <Valheim>\_labdb automatically): each `dotnet test` writes labdb.trx and the database is

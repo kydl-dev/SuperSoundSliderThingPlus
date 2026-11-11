@@ -33,4 +33,8 @@
   </ItemGroup>
 
   <Import Project="..\..\Claude\shared\Kydl.Mod.targets" />
+  <!-- quality runs only (KydlQuality=true, _agent\tools\test-quality.ps1): the unit tests see the internals of the mutated assembly; normal builds are unchanged -->
+  <ItemGroup Condition="'$(KydlQuality)' == 'true'">
+    <Compile Include="tests\QualityInternals.cs" />
+  </ItemGroup>
 </Project>

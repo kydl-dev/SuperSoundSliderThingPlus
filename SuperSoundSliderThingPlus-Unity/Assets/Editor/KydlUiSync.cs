@@ -13,7 +13,7 @@ namespace SuperSoundSliderThingPlus.EditorTools
     [InitializeOnLoad]
     public static class KydlUiSync
     {
-        // <Main>/<Project>-Unity -> <Main> -> E:\Projects\Valheim -> KydlCore\KydlCore-Mod\src\Shared\Ui
+        // <Main>/<Project>-Unity -> <Main> -> <Valheim> -> KydlCore\KydlCore-Mod\src\Shared\Ui
         private const string SharedRelative = "../../KydlCore/KydlCore-Mod/src/Shared/Ui";
         private const string TargetRelative = "Assets/Kydl.Ui";
 

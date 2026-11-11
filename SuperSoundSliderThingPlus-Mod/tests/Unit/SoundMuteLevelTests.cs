@@ -6,11 +6,11 @@ namespace SuperSoundSliderThingPlus.Tests.Unit
     /// The clamp the hub sliders go through before a level is written (D-011: mute levels 0..100 percent).
     public class SoundMuteLevelTests
     {
-        [TestCase(0f, 0f, SoundMixRules.InRange)]
-        [TestCase(37.5f, 37.5f, SoundMixRules.InRange)]
-        [TestCase(100f, 100f, SoundMixRules.InRange)]
-        [TestCase(-1f, 0f, SoundMixRules.Clamped)]
-        [TestCase(250f, 100f, SoundMixRules.Clamped)]
+        [TestCase(0f, 0f, "in range")]
+        [TestCase(37.5f, 37.5f, "in range")]
+        [TestCase(100f, 100f, "in range")]
+        [TestCase(-1f, 0f, "clamped into range")]
+        [TestCase(250f, 100f, "clamped into range")]
         public void Level_ClampsIntoZeroToHundred(float requested, float expected, string reason)
         {
             var r = SoundMixRules.Level(requested);
