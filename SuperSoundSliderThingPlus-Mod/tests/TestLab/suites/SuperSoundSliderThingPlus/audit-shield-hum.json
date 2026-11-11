@@ -1,5 +1,5 @@
 ﻿{
-  "name": "audit-shield-hum-checked",
+  "name": "audit-shield-hum",
   "description": "AUDIT: the shield dome hum (plain AudioSource, the wall loop) follows the shield generator slider",
   "timeout": 60,
   "steps": [

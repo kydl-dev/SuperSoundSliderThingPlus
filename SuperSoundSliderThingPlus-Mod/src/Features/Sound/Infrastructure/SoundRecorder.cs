@@ -11,7 +11,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
     /// </summary>
     internal static class SoundRecorder
     {
-        internal const int MaxEntries = 1000;
+        internal const int MaxEntries = 20000;   // was 1000: a full creature tour (160 creatures) sees about 1300 pairs, and a full recorder drops new ones silently
         private static readonly Dictionary<string, Entry> Seen = new Dictionary<string, Entry>();
 
         private sealed class Entry

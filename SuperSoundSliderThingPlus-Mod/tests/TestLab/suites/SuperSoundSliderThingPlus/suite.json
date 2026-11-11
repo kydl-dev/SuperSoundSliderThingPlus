@@ -106,9 +106,11 @@
                   "audit-shield",
                   "audit-portal",
                   "audit-chicken",
-                  "audit-shield-hum-checked",
-                  "final-mix-checked",
-                  "sweep-master-checked",
-                  "mobs-sounds-checked"
+                  "audit-shield-hum",
+                  "final-mix",
+                  "sweep-master",
+                  "mobs-sounds",
+                  "mobs-attacks",
+                  "mobs-tour"
               ]
 }

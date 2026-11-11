@@ -1,0 +1,87 @@
+{
+  "name": "mobs-tour",
+  "description": "AUDIT: every creature of the game is spawned one at a time in front of the god-mode player for 30 s so it attacks; the sounds the patch saw because of it are logged",
+  "timeout": 5600,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.moveAway",
+      "args": {
+        "metres": 200
+      },
+      "contains": "moved to",
+      "label": "the player stands 200 m from the lab start, on flat dry ground"
+    },
+    {
+      "do": "wait",
+      "seconds": 12
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.noFly",
+      "contains": "god mode True",
+      "label": "the player is on the ground in god mode"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.forget"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.tourStart",
+      "args": {
+        "seconds": 30,
+        "filter": ""
+      },
+      "expect": true,
+      "label": "the creature tour starts (30 s per creature)"
+    },
+    {
+      "do": "wait",
+      "until": {
+        "check": "hook",
+        "name": "SuperSoundSliderThingPlus.mob.tourDone",
+        "expect": true
+      },
+      "timeout": 5400
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.tourSummary",
+      "contains": "tour of",
+      "label": "summary"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ],
+  "setup": {
+    "god": 1,
+    "ghost": 0,
+    "fly": 0,
+    "hostile": 1
+  },
+  "clearArea": {
+    "enabled": true,
+    "radius": 150,
+    "kinds": "All",
+    "aroundArena": true
+  }
+}

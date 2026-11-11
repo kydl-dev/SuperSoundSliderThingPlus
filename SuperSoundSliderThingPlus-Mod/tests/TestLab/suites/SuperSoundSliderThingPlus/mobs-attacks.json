@@ -1,0 +1,63 @@
+{
+  "name": "mobs-attacks",
+  "description": "AUDIT: creatures attack a grounded god-mode player (no fly), so attack / hit / shockwave sounds are played by the game and handled by the patch",
+  "timeout": 150,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.noFly",
+      "contains": "god mode True",
+      "label": "the player is on the ground (not flying) and still in god mode"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.forget"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.spawn",
+      "args": {
+        "prefabs": "Abomination,SeekerBrute,Fader,Boar,Wolf,Lox,DvergerMage,DvergerMageSupport,Troll,Draugr,Goblin,GoblinBrute,Skeleton,Neck,Greyling,Deer,Serpent,Bonemass,GoblinShaman,Hen,Ghost,Charred_Melee,FenringCultist,Fenring"
+      },
+      "contains": "spawned"
+    },
+    {
+      "do": "wait",
+      "seconds": 30
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.report",
+      "label": "creatures reached the grounded god-mode player and attacked"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.noFly",
+      "contains": "god mode True"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.clear"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

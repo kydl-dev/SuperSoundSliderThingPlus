@@ -1,5 +1,5 @@
 ﻿{
-  "name": "final-mix-checked",
+  "name": "final-mix",
   "description": "AUDIT: the master's effect on the FINAL output (AudioListener.GetOutputData): a tone through each mixer group is measured at master 0 / 50 / 100",
   "timeout": 180,
   "steps": [

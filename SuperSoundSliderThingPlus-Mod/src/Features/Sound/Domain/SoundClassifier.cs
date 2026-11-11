@@ -9,7 +9,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
     /// </summary>
     internal static class SoundClassifier
     {
-        private static readonly string[] WeatherPrefabs = { "sfx_thunder", "sfx_mistlands_thunder" };
+        private static readonly string[] WeatherPrefabs = { "sfx_thunder", "sfx_mistlands_thunder", "sfx_distant thunder", "sfx_cinder_rain_hit" };
         private static readonly string[] WeatherClipWords = { "rain", "thunder", "blizzard", "mainwind", "windbreeze", "oneshots_wind" };
         private static readonly char[] OwnerSeparators = { '_', '(', ')', ' ', '-', '.' };
         private const string AmbientClipPrefix = "amb_", ShieldGeneratorWord = "shieldgenerator", PortalWord = "portal", WolfPupOwner = "wolf_cub", LoveWord = "love";

@@ -1,5 +1,5 @@
 {
-  "name": "mobs-sounds-checked",
+  "name": "mobs-sounds",
   "description": "AUDIT: real creatures are spawned around the player (aware, then ignoring a ghost player) so the sounds the sweep could not play are handled by the patch; the log lists every sound/owner pair with its category",
   "timeout": 120,
   "steps": [
