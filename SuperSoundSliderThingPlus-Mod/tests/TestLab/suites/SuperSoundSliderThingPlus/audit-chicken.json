@@ -1,0 +1,135 @@
+{
+  "name": "audit-chicken",
+  "description": "AUDIT: every ChickenLove sound is played at mute 0 / 50 / 100 and the volume the mod leaves on it is compared with the volume the game set",
+  "timeout": 180,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ChickenLove",
+        "value": 0
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.play",
+      "args": {
+        "prefab": "fx_hen_love"
+      },
+      "contains": "playing",
+      "label": "play fx_hen_love at mute 0"
+    },
+    {
+      "do": "wait",
+      "seconds": 0.12
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
+      "args": {
+        "expected": 1.0,
+        "tolerance": 0.03
+      },
+      "expect": true,
+      "label": "fx_hen_love at 0% mute plays at 100% of the game's volume"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.clear"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ChickenLove",
+        "value": 50
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.play",
+      "args": {
+        "prefab": "fx_hen_love"
+      },
+      "contains": "playing",
+      "label": "play fx_hen_love at mute 50"
+    },
+    {
+      "do": "wait",
+      "seconds": 0.12
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
+      "args": {
+        "expected": 0.5,
+        "tolerance": 0.03
+      },
+      "expect": true,
+      "label": "fx_hen_love at 50% mute plays at 50% of the game's volume"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.clear"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ChickenLove",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.play",
+      "args": {
+        "prefab": "fx_hen_love"
+      },
+      "contains": "playing",
+      "label": "play fx_hen_love at mute 100"
+    },
+    {
+      "do": "wait",
+      "seconds": 0.12
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
+      "args": {
+        "expected": 0.0,
+        "tolerance": 0.03
+      },
+      "expect": true,
+      "label": "fx_hen_love at 100% mute plays at 0% of the game's volume"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sound.clear"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "ChickenLove",
+        "value": 0
+      },
+      "contains": "Success"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

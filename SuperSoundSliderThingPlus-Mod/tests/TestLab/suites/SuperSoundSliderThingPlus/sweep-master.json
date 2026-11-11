@@ -1,0 +1,67 @@
+{
+  "name": "sweep-master",
+  "description": "AUDIT: every game sound effect is played with the master at 50%; the log lists which sounds reach a mixer group (follow the master) and the category and volume of each",
+  "timeout": 320,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 50
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "wait",
+      "seconds": 1.5
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.volume.game",
+      "expect": 0.5,
+      "label": "game master volume is 0.5"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sweep.start",
+      "expect": true,
+      "label": "sweep starts"
+    },
+    {
+      "do": "wait",
+      "until": {
+        "check": "hook",
+        "name": "SuperSoundSliderThingPlus.sweep.done",
+        "expect": true
+      },
+      "timeout": 280
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.sweep.summary",
+      "contains": "sounds",
+      "label": "summary"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 100
+      },
+      "contains": "Success"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

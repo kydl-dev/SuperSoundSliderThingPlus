@@ -73,8 +73,47 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
             if (player == null) return "Failed: no local player";
             _probe = UnityEngine.Object.Instantiate(source, player.transform.position + Vector3.up, Quaternion.identity);
             _probeSource = _probe.GetComponentInChildren<AudioSource>();
+            StartIfIdle(_probe);
             ModLog.Verbose("SoundTestHooks: playing " + _probe.name + ", audio source " + (_probeSource != null));
             return _probeSource != null ? "playing " + _probe.name : "Failed: '" + prefab + "' has no AudioSource";
+        }
+
+        private static GameObject _cub;
+        private static float _baseline = float.NaN;
+
+        /// <summary>Spawns a wolf cub and plays the effect prefab at the cub (the sound of a wolf PUP), keeping it as THE probe.</summary>
+        [TestHook("SuperSoundSliderThingPlus.sound.playAtCub")]
+        static string PlayAtCub(string prefab)
+        {
+            Clear();
+            GameObject cubPrefab = FindNetPrefab("Wolf_cub");
+            GameObject source = FindPrefab(prefab);
+            Player player = Player.m_localPlayer;
+            if (cubPrefab == null || source == null || player == null) return "Failed: cub " + (cubPrefab != null) + " sound " + (source != null) + " player " + (player != null);
+            _cub = UnityEngine.Object.Instantiate(cubPrefab, player.transform.position + player.transform.forward * 4f, Quaternion.identity);
+            _probe = UnityEngine.Object.Instantiate(source, _cub.transform.position + Vector3.up * 0.5f, Quaternion.identity);
+            _probeSource = _probe.GetComponentInChildren<AudioSource>();
+            StartIfIdle(_probe);
+            return _probeSource != null ? "playing " + _probe.name + " at a cub" : "Failed: '" + prefab + "' has no AudioSource";
+        }
+
+        /// <summary>Remembers the probe's volume right now as the reference for <see cref="ProbeRatioNear"/>.</summary>
+        [TestHook("SuperSoundSliderThingPlus.probe.mark")]
+        static double ProbeMark()
+        {
+            _baseline = Alive() ? _probeSource.volume : float.NaN;
+            return Math.Round(_baseline, 4);
+        }
+
+        /// <summary>Is the probe's volume now `expected` x the marked volume (within `tolerance`)?</summary>
+        [TestHook("SuperSoundSliderThingPlus.probe.ratioNear")]
+        static bool ProbeRatioNear(double expected, double tolerance)
+        {
+            if (!Alive() || float.IsNaN(_baseline) || _baseline <= 0.0005f) return false;
+            double ratio = _probeSource.volume / _baseline;
+            bool near = Math.Abs(ratio - expected) <= tolerance;
+            ModLog.Info("SoundTestHooks: AUDIT " + _probeSource.gameObject.name + " baseline " + _baseline.ToString("F4") + " now " + _probeSource.volume.ToString("F4") + " ratio " + ratio.ToString("F3") + " expected " + expected + " -> " + (near ? "ok" : "WRONG"));
+            return near;
         }
 
         /// <summary>Is the probe sound playing right now?</summary>
@@ -167,11 +206,57 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
         [TestHook("SuperSoundSliderThingPlus.sound.clear")]
         static bool Clear()
         {
+            if (_cub != null)
+            {
+                ZNetView view = _cub.GetComponent<ZNetView>();
+                if (view != null && ZNetScene.instance != null) ZNetScene.instance.Destroy(_cub); else UnityEngine.Object.Destroy(_cub);
+                _cub = null;
+            }
             if (_probe != null) UnityEngine.Object.Destroy(_probe);
             _probe = null;
             _probeSource = null;
             return _probe == null;
         }
+
+        // network prefabs (creatures) are listed by the scene; plain effect prefabs are found among the loaded assets
+        private static GameObject FindNetPrefab(string name) => ZNetScene.instance != null ? ZNetScene.instance.GetPrefab(name) : null;
+
+        // some sounds are started by game code, not on awake (e.g. the shield wall loop): start them the way the game does
+        private static void StartIfIdle(GameObject root)
+        {
+            foreach (ZSFX z in root.GetComponentsInChildren<ZSFX>())
+            {
+                if (!z.m_playOnAwake) z.Play();
+            }
+        }
+
+        /// <summary>Does what the mod did to the probe match its factor (volume after the mod / volume the game set = the category factor)?</summary>
+        [TestHook("SuperSoundSliderThingPlus.probe.scaledRatio")]
+        static bool ProbeScaledRatio(double expected, double tolerance)
+        {
+            if (!Alive()) { ModLog.Info("SoundTestHooks: AUDIT no probe"); return false; }
+            ZSFX z = _probe.GetComponentInChildren<ZSFX>();
+            SoundCategory category;
+            float raw, scaled;
+            if (z == null || !SuperSoundSliderThingPlus.Integrations.Harmony.ZsfxCustomUpdatePatch.TryGetLast(z, out category, out raw, out scaled)) { ModLog.Info("SoundTestHooks: AUDIT " + _probe.name + " not seen by the patch yet"); return false; }
+            if (raw <= 0.0005f) { ModLog.Info("SoundTestHooks: AUDIT " + _probe.name + " raw volume " + raw.ToString("F4") + " too low to judge"); return false; }
+            double ratio = scaled / raw;
+            bool ok = Math.Abs(ratio - expected) <= tolerance;
+            ModLog.Info("SoundTestHooks: AUDIT " + _probe.name + " category " + category + " raw " + raw.ToString("F4") + " scaled " + scaled.ToString("F4") + " ratio " + ratio.ToString("F3") + " expected " + expected + " -> " + (ok ? "ok" : "WRONG"));
+            return ok;
+        }
+
+        /// <summary>Starts the all-sounds sweep (every sound prefab is played for a few frames; one SWEEP line per sound in the log).</summary>
+        [TestHook("SuperSoundSliderThingPlus.sweep.start")]
+        static bool SweepStart() { return SoundSweeper.Begin(); }
+
+        /// <summary>Has the sweep finished?</summary>
+        [TestHook("SuperSoundSliderThingPlus.sweep.done")]
+        static bool SweepDone() { return SoundSweeper.IsDone(); }
+
+        /// <summary>The sweep's result line.</summary>
+        [TestHook("SuperSoundSliderThingPlus.sweep.summary")]
+        static string SweepSummary() { return SoundSweeper.State(); }
 
         private static bool Alive() => _probe != null && _probeSource != null;
 

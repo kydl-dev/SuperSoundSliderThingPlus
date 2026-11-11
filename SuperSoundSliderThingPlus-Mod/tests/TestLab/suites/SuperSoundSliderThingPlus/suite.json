@@ -8,7 +8,7 @@
                         },
                         {
                             "guid":  "com.kydldev.KydlCore",
-                            "minVersion": "1.2.0"
+                            "minVersion":  "1.2.0"
                         }
                     ],
     "configOverrides":  [
@@ -99,6 +99,13 @@
                   "mute-isolated",
                   "mute-portal",
                   "equalize",
-                  "first-run-defaults"
+                  "first-run-defaults",
+                  "audit-effects",
+                  "audit-weather",
+                  "audit-wolfpup",
+                  "audit-shield",
+                  "audit-portal",
+                  "audit-chicken",
+                  "sweep-master"
               ]
 }
