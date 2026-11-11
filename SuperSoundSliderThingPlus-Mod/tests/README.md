@@ -12,6 +12,6 @@
 
 Build the mod first (the tests read `assets\SuperSoundSliderThingPlus.dll`). Lab runs: never build while the game runs; read `Claude\lessons\TESTLAB_PLAYBOOK.md`
 and the current lab docs (`%APPDATA%\com.kesomannen.gale\valheim\profiles\test\BepInEx\config\DrakesTestLab\docs`). Every run is archived in
-`E:\Projects\Valheim\_testlab\` (results + DLL hashes) and gets a TESTLOG line. Release: 3 consecutive green FULL runs of this DLL (G16, no ecosystem run since 2026-11-08): `Claude\lessons\scripts\lab-chain.ps1`; a new or changed test must first pass 10/10 with `repeat-tests.ps1`; `check-tests.ps1` before every run; poll with `lab-progress.ps1`
+`<Valheim>\_testlab\` (results + DLL hashes) and gets a TESTLOG line. Release: 3 consecutive green FULL runs of this DLL (G16, no ecosystem run since 2026-11-08): `Claude\lessons\scripts\lab-chain.ps1`; a new or changed test must first pass 10/10 with `repeat-tests.ps1`; `check-tests.ps1` before every run; poll with `lab-progress.ps1`
 (all in `Claude\lessons\scripts\`, overview in `Claude\lessons\TESTING_TOOLKIT.md`, rules in `LESSONS_LEARNED.md` section 7, logging in `DIAGNOSTIC_LOGGING.md`).
 Everything in this folder stays out of the release zip.
