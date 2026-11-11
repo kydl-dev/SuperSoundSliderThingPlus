@@ -1,783 +1,726 @@
 {
-  "name": "audit-shield",
-  "description": "AUDIT: every ShieldGenerator sound is played at mute 0 / 50 / 100 and the volume the mod leaves on it is compared with the volume the game set",
-  "timeout": 180,
-  "steps": [
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.arena",
-      "contains": "arena at"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 0
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_hit"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_hit at mute 0"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 1.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_hit at 0% mute plays at 100% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 50
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_hit"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_hit at mute 50"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.5,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_hit at 50% mute plays at 50% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 100
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_hit"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_hit at mute 100"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_hit at 100% mute plays at 0% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 0
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_startup"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_startup at mute 0"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 1.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_startup at 0% mute plays at 100% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 50
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_startup"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_startup at mute 50"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.5,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_startup at 50% mute plays at 50% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 100
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_startup"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_startup at mute 100"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_startup at 100% mute plays at 0% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 0
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_shutdown"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_shutdown at mute 0"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 1.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_shutdown at 0% mute plays at 100% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 50
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_shutdown"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_shutdown at mute 50"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.5,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_shutdown at 50% mute plays at 50% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 100
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_shutdown"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_shutdown at mute 100"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_shutdown at 100% mute plays at 0% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 0
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_refuel"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_refuel at mute 0"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 1.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_refuel at 0% mute plays at 100% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 50
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_refuel"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_refuel at mute 50"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.5,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_refuel at 50% mute plays at 50% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 100
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_refuel"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_refuel at mute 100"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_refuel at 100% mute plays at 0% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 0
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_powered_loop"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_powered_loop at mute 0"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 1.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_powered_loop at 0% mute plays at 100% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 50
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_powered_loop"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_powered_loop at mute 50"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.5,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_powered_loop at 50% mute plays at 50% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 100
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_powered_loop"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_powered_loop at mute 100"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_powered_loop at 100% mute plays at 0% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 0
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_wall_loop"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_wall_loop at mute 0"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 1.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_wall_loop at 0% mute plays at 100% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 50
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_wall_loop"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_wall_loop at mute 50"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.5,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_wall_loop at 50% mute plays at 50% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 100
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_wall_loop"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_wall_loop at mute 100"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_wall_loop at 100% mute plays at 0% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 0
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_lowfuel_loop"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_lowfuel_loop at mute 0"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 1.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_lowfuel_loop at 0% mute plays at 100% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 50
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_lowfuel_loop"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_lowfuel_loop at mute 50"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.5,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_lowfuel_loop at 50% mute plays at 50% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 100
-      },
-      "contains": "Success"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.play",
-      "args": {
-        "prefab": "sfx_shieldgenerator_lowfuel_loop"
-      },
-      "contains": "playing",
-      "label": "play sfx_shieldgenerator_lowfuel_loop at mute 100"
-    },
-    {
-      "do": "wait",
-      "seconds": 0.12
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.probe.scaledRatio",
-      "args": {
-        "expected": 0.0,
-        "tolerance": 0.03
-      },
-      "expect": true,
-      "label": "sfx_shieldgenerator_lowfuel_loop at 100% mute plays at 0% of the game's volume"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.sound.clear"
-    },
-    {
-      "do": "hook",
-      "name": "SuperSoundSliderThingPlus.mute.set",
-      "args": {
-        "slider": "ShieldGenerator",
-        "value": 0
-      },
-      "contains": "Success"
-    }
-  ],
-  "asserts": [
-    {
-      "check": "noErrors",
-      "source": "SuperSoundSliderThingPlus"
-    }
-  ]
+    "name":  "audit-shield",
+    "description":  "AUDIT: every ShieldGenerator sound is played at mute 0 / 50 / 100 and the volume the mod leaves on it is compared with the volume the game set",
+    "timeout":  180,
+    "steps":  [
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.arena",
+                      "contains":  "arena at"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  0
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_hit"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_hit at mute 0"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  1.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_hit at 0% mute plays at 100% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  50
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_hit"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_hit at mute 50"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.5,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_hit at 50% mute plays at 50% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  100
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_hit"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_hit at mute 100"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_hit at 100% mute plays at 0% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  0
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_startup"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_startup at mute 0"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  1.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_startup at 0% mute plays at 100% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  50
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_startup"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_startup at mute 50"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.5,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_startup at 50% mute plays at 50% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  100
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_startup"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_startup at mute 100"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_startup at 100% mute plays at 0% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  0
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_shutdown"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_shutdown at mute 0"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  1.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_shutdown at 0% mute plays at 100% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  50
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_shutdown"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_shutdown at mute 50"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.5,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_shutdown at 50% mute plays at 50% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  100
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_shutdown"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_shutdown at mute 100"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_shutdown at 100% mute plays at 0% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  0
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_refuel"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_refuel at mute 0"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  1.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_refuel at 0% mute plays at 100% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  50
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_refuel"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_refuel at mute 50"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.5,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_refuel at 50% mute plays at 50% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  100
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_refuel"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_refuel at mute 100"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_refuel at 100% mute plays at 0% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  0
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_powered_loop"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_powered_loop at mute 0"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  1.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_powered_loop at 0% mute plays at 100% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  50
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_powered_loop"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_powered_loop at mute 50"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.5,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_powered_loop at 50% mute plays at 50% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  100
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_powered_loop"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_powered_loop at mute 100"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_powered_loop at 100% mute plays at 0% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  0
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  50
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  100
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  0
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_lowfuel_loop"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_lowfuel_loop at mute 0"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  1.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_lowfuel_loop at 0% mute plays at 100% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  50
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_lowfuel_loop"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_lowfuel_loop at mute 50"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.5,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_lowfuel_loop at 50% mute plays at 50% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  100
+                               },
+                      "contains":  "Success"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.play",
+                      "args":  {
+                                   "prefab":  "sfx_shieldgenerator_lowfuel_loop"
+                               },
+                      "contains":  "playing",
+                      "label":  "play sfx_shieldgenerator_lowfuel_loop at mute 100"
+                  },
+                  {
+                      "do":  "wait",
+                      "seconds":  0.12
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.probe.scaledRatio",
+                      "args":  {
+                                   "expected":  0.0,
+                                   "tolerance":  0.03
+                               },
+                      "expect":  true,
+                      "label":  "sfx_shieldgenerator_lowfuel_loop at 100% mute plays at 0% of the game\u0027s volume"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.sound.clear"
+                  },
+                  {
+                      "do":  "hook",
+                      "name":  "SuperSoundSliderThingPlus.mute.set",
+                      "args":  {
+                                   "slider":  "ShieldGenerator",
+                                   "value":  0
+                               },
+                      "contains":  "Success"
+                  }
+              ],
+    "asserts":  [
+                    {
+                        "check":  "noErrors",
+                        "source":  "SuperSoundSliderThingPlus"
+                    }
+                ]
 }
