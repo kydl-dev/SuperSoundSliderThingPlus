@@ -19,6 +19,7 @@ namespace SuperSoundSliderThingPlus.Integrations.Harmony
         private sealed class SoundEntry
         {
             internal SoundCategory Category;
+            internal float LastScale = 1f;   // what the volume was multiplied by on the previous call (the heard audio was made with it)
         }
 
         private static readonly ConditionalWeakTable<ZSFX, SoundEntry> Entries = new ConditionalWeakTable<ZSFX, SoundEntry>();
@@ -29,8 +30,11 @@ namespace SuperSoundSliderThingPlus.Integrations.Harmony
         {
             if (___m_audioSource == null) return;
             SoundEntry entry = Entries.GetValue(__instance, Classify);
-            float factor = SoundLevels.Factor(entry.Category) * LoudnessEqualizer.GainFor(___m_audioSource.clip);
-            if (factor != 1f) ___m_audioSource.volume *= factor;
+            // the game has just set the volume (unscaled); the audio heard right now was made with the previous scale applied
+            LoudnessEqualizer.Observe(___m_audioSource, ___m_audioSource.volume * entry.LastScale);
+            float scale = SoundLevels.Factor(entry.Category) * LoudnessEqualizer.GainFor(___m_audioSource.clip);
+            entry.LastScale = scale;
+            if (scale != 1f) ___m_audioSource.volume *= scale;
         }
 
         private static SoundEntry ClassifyNew(ZSFX sfx)

@@ -47,16 +47,15 @@ namespace SuperSoundSliderThingPlus.Testing
             if (ModSettings.MasterMute == null) return "FAIL: the slider config is not bound";
             var feature = SoundFeature.Instance;
             if (feature == null || !feature.Running) return "SKIP: the sound feature is not running (mod off)";
-            float master = ModSettings.MasterMute.Value;
-            string worst = string.Empty;
+                        string worst = string.Empty;
             foreach (SoundCategory c in System.Enum.GetValues(typeof(SoundCategory)))
             {
-                float expected = (1f - master / 100f) * (1f - SoundLevels.MuteOf(c) / 100f);
+                float expected = 1f - SoundLevels.MuteOf(c) / 100f;   // the master is the game's own volume (D-017)
                 float actual = SoundLevels.Factor(c);
                 ModLog.Verbose("InGameTests: Startup_SoundFactorsMatchTheConfig " + c + " factor " + actual.ToString("F3") + ", expected " + expected.ToString("F3"));
                 if (System.Math.Abs(actual - expected) > 0.001f) worst = c + " factor " + actual.ToString("F3") + ", expected " + expected.ToString("F3");
             }
-            return worst.Length == 0 ? "PASS: master " + master.ToString("F0") + "% - every category factor matches" : "FAIL: " + worst;
+            return worst.Length == 0 ? "PASS: every category factor matches its own mute level" : "FAIL: " + worst;
         }
 
         /// 5 s into a world the patches have classified real sounds; the detail lists how many distinct sounds landed in each slider.

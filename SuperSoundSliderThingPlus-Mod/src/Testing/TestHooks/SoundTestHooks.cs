@@ -105,7 +105,7 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
         {
             if (!Alive()) return "Failed: no probe";
             float gain = SuperSoundSliderThingPlus.Features.Sound.Infrastructure.LoudnessEqualizer.GainFor(_probeSource.clip);
-            float rms = SuperSoundSliderThingPlus.Integrations.Valheim.ClipMeter.RmsOf(_probeSource.clip, 1f);
+            float rms = SuperSoundSliderThingPlus.Integrations.Valheim.ClipMeter.RmsOf(_probeSource.clip);
             return "gain " + gain.ToString("F2") + " rms " + rms.ToString("F4");
         }
 
@@ -148,6 +148,20 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
         /// <summary>Is the mixer's SFX volume audible (above zero)?</summary>
         [TestHook("SuperSoundSliderThingPlus.volume.sfxAudible")]
         static bool VolumeSfxAudible() { return SuperSoundSliderThingPlus.Integrations.Valheim.GameVolume.Sfx() > 0.001f; }
+
+        /// <summary>EXPERIMENT: the RMS of the probe source's output block and the volume it has - tells whether AudioSource.GetOutputData is post-volume.</summary>
+        [TestHook("SuperSoundSliderThingPlus.loudness.output")]
+        static string LoudnessOutput()
+        {
+            if (!Alive()) return "Failed: no probe";
+            var block = new float[1024];
+            _probeSource.GetOutputData(block, 0);
+            double sum = 0;
+            for (int i = 0; i < block.Length; i++) sum += block[i] * block[i];
+            string text = "vol " + _probeSource.volume.ToString("F4") + " rms " + Math.Sqrt(sum / block.Length).ToString("F5") + " playing " + _probeSource.isPlaying;
+            ModLog.Info("SoundTestHooks: output probe " + text);
+            return text;
+        }
 
         /// <summary>Removes the probe (also done by the next Play).</summary>
         [TestHook("SuperSoundSliderThingPlus.sound.clear")]

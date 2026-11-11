@@ -13,7 +13,7 @@
       "do": "hook",
       "name": "SuperSoundSliderThingPlus.sound.play",
       "args": {
-        "prefab": "sfx_thunder"
+        "prefab": "sfx_shieldgenerator_powered_loop"
       },
       "contains": "playing",
       "label": "probe plays"
@@ -38,7 +38,7 @@
     },
     {
       "do": "wait",
-      "seconds": 1
+      "seconds": 2
     },
     {
       "do": "hook",

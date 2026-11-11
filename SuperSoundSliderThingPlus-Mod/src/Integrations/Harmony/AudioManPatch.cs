@@ -8,6 +8,7 @@ namespace SuperSoundSliderThingPlus.Integrations.Harmony
     /// volume) and a few times a second afterwards, the slider follows the game. The other direction is the slider's own change event.
     /// AudioMan exists in the main menu too, so this also works before a world is loaded.
     /// </summary>
+    [HarmonyPatch]   // class-level attribute: Harmony's PatchAll only looks at classes that carry one, the methods below name their own targets
     internal static class AudioManPatch
     {
         [HarmonyPatch(typeof(AudioMan), "Start")]

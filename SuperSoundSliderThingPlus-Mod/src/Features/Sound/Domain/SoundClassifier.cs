@@ -43,6 +43,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
         private static bool ContainsAny(string text, string[] words)
             => Array.Exists(words, word => text.Contains(word));
 
-        private static string Normalise(string name) => string.IsNullOrEmpty(name) ? string.Empty : name.Trim().ToLowerInvariant();
+        // instantiated objects are named "<prefab>(Clone)": the suffix is dropped so a prefab name matches exactly (found in game 2026-11-11: "sfx_thunder(Clone)" was not weather)
+        private static string Normalise(string name) => string.IsNullOrEmpty(name) ? string.Empty : name.Replace("(Clone)", string.Empty).Replace("(clone)", string.Empty).Trim().ToLowerInvariant();
     }
 }
