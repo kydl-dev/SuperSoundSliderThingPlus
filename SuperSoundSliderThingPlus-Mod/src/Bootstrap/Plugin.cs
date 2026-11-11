@@ -18,7 +18,7 @@ namespace SuperSoundSliderThingPlus.Bootstrap
     [BepInDependency(Jotunn.Main.ModGuid)]
     // HARD dependency on KydlCore (T-070): BepInEx loads KydlCore first and refuses to load this mod without it (or with an older one).
     // The version here = the KydlCore version in manifest.json (a test checks it). Raise both together when the mod needs a newer KydlCore.
-    [BepInDependency(KydlCore.Bootstrap.Plugin.ModGuid, "1.2.0")]
+    [BepInDependency(KydlCore.Bootstrap.Plugin.ModGuid, "1.1.0")]
     // MIGRATION_DECISIONS "Network compatibility": exact versions (Patch). A mod that changes shared world state = EveryoneMustHaveMod;
     // a client-only mod (camera / view) = VersionCheckOnly (joins servers without it; same version when the server has it). Reason in docs\Dependencies.md.
     [NetworkCompatibility(CompatibilityLevel.VersionCheckOnly, VersionStrictness.Patch)]
