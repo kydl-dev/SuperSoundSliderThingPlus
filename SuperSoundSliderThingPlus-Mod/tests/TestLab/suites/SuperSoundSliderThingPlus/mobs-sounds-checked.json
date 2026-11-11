@@ -1,0 +1,79 @@
+{
+  "name": "mobs-sounds-checked",
+  "description": "AUDIT: real creatures are spawned around the player (aware, then ignoring a ghost player) so the sounds the sweep could not play are handled by the patch; the log lists every sound/owner pair with its category",
+  "timeout": 120,
+  "steps": [
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.arena",
+      "contains": "arena at"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mute.set",
+      "args": {
+        "slider": "Master",
+        "value": 100
+      },
+      "contains": "Success"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.forget"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.spawn",
+      "args": {
+        "prefabs": "Abomination,SeekerBrute,Fader,Boar,Wolf,Lox,DvergerMage,DvergerMageSupport,Troll,Draugr,Goblin,GoblinBrute,Skeleton,Neck,Greyling,Deer,Serpent,Bonemass,Hen,Raven"
+      },
+      "contains": "spawned",
+      "label": "spawn the creatures whose sounds the sweep could not play"
+    },
+    {
+      "do": "wait",
+      "seconds": 20
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.report",
+      "label": "phase 1: creatures aware of the player (god mode keeps the player alive)"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.ghost",
+      "args": {
+        "on": true
+      },
+      "contains": "ghost True",
+      "label": "player becomes a ghost: creatures ignore him"
+    },
+    {
+      "do": "wait",
+      "seconds": 10
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.report",
+      "label": "phase 2: creatures ignoring the ghost player"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.ghost",
+      "args": {
+        "on": false
+      },
+      "contains": "ghost False"
+    },
+    {
+      "do": "hook",
+      "name": "SuperSoundSliderThingPlus.mob.clear"
+    }
+  ],
+  "asserts": [
+    {
+      "check": "noErrors",
+      "source": "SuperSoundSliderThingPlus"
+    }
+  ]
+}

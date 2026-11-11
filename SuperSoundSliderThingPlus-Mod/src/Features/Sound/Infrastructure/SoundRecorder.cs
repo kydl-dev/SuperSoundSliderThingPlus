@@ -71,6 +71,18 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
             return sb.ToString();
         }
 
+        /// <summary>Every recorded pair as "sound | owner = Category x count", separated by "; " (test logs).</summary>
+        internal static string List()
+        {
+            var sb = new StringBuilder();
+            foreach (KeyValuePair<string, Entry> pair in Seen)
+            {
+                if (sb.Length > 0) sb.Append("; ");
+                sb.Append(pair.Key).Append(" = ").Append(pair.Value.Category).Append(" x").Append(pair.Value.Count);
+            }
+            return sb.ToString();
+        }
+
         /// <summary>Forgets everything (tests).</summary>
         internal static bool Clear()
         {
