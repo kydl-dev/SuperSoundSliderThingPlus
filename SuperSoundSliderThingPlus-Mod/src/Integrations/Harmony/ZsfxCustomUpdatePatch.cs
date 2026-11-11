@@ -38,7 +38,7 @@ namespace SuperSoundSliderThingPlus.Integrations.Harmony
             // a source without a mixer group (the candle sounds) never meets the game's master volume: apply it here, with the mixer's curve (amplitude = sqrt(volume))
             if (___m_audioSource.outputAudioMixerGroup == null) scale *= SoundLevels.UngroupedMasterFactor();
             entry.LastScale = scale;
-            if (scale != 1f) ___m_audioSource.volume *= scale;
+            if (!FloatCompare.Same(scale, 1f)) ___m_audioSource.volume *= scale;
             entry.Scaled = ___m_audioSource.volume;
         }
 

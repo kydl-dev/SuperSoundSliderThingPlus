@@ -18,7 +18,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
             if (!IsNumber(volume)) return OperationResponse<float>.Rejected(NotANumber);
             float v = volume < 0f ? 0f : volume > 1f ? 1f : volume;
             float mute = (float)System.Math.Round((1f - v) * 100f, 1);
-            return OperationResponse<float>.Success(mute, v == volume ? InRange : Clamped);
+            return OperationResponse<float>.Success(mute, FloatCompare.Same(v, volume) ? InRange : Clamped);
         }
 
         /// <summary>Expected outcome: Success with the game volume 0..1 for a mute level; the level is clamped into 0..100; Rejected for NaN / infinity.</summary>
@@ -26,7 +26,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
         {
             if (!IsNumber(mute)) return OperationResponse<float>.Rejected(NotANumber);
             float m = mute < 0f ? 0f : mute > 100f ? 100f : mute;
-            return OperationResponse<float>.Success(1f - m / 100f, m == mute ? InRange : Clamped);
+            return OperationResponse<float>.Success(1f - m / 100f, FloatCompare.Same(m, mute) ? InRange : Clamped);
         }
 
         /// <summary>True when two mute levels are the same slider position (rounding noise of the float round trip is ignored).</summary>

@@ -26,7 +26,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
         {
             if (!Active()) return 1f;
             float rms = ClipMeter.RmsOf(clip);
-            if (rms == ClipMeter.Unknown) return 1f;
+            if (rms <= ClipMeter.Unknown) return 1f;
             var r = LoudnessRules.Gain(rms, ModSettings.TargetRms.Value, ModSettings.MinGain.Value, ModSettings.MaxGain.Value);
             if (!r.IsSuccess)
             {

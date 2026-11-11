@@ -16,7 +16,7 @@ namespace SuperSoundSliderThingPlus.Features.Example.Domain
         {
             if (float.IsNaN(requested) || float.IsInfinity(requested)) return OperationResponse<float>.Rejected(NotANumber);
             float value = requested < Min ? Min : requested > Max ? Max : requested;
-            return OperationResponse<float>.Success(value, value == requested ? InRange : Clamped);
+            return OperationResponse<float>.Success(value, System.Math.Abs(value - requested) < 1e-6f ? InRange : Clamped);
         }
     }
 }

@@ -38,7 +38,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
             if (!IsNumber(measuredRms) || measuredRms < SilenceBelow) return OperationResponse<float>.Success(1f, NotMeasurable);
             float gain = targetRms / measuredRms;
             float limited = gain < minGain ? minGain : gain > maxGain ? maxGain : gain;
-            return OperationResponse<float>.Success(limited, limited == gain ? Exact : Limited);
+            return OperationResponse<float>.Success(limited, FloatCompare.Same(limited, gain) ? Exact : Limited);
         }
 
         private static bool IsNumber(float value) => !float.IsNaN(value) && !float.IsInfinity(value);

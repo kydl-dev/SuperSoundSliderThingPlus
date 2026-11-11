@@ -18,7 +18,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
             if (!IsNumber(masterMute) || !IsNumber(categoryMute)) return OperationResponse<float>.Rejected(NotANumber);
             float master = Clamp(masterMute);
             float category = Clamp(categoryMute);
-            bool clamped = master != masterMute || category != categoryMute;
+            bool clamped = !FloatCompare.Same(master, masterMute) || !FloatCompare.Same(category, categoryMute);
             float factor = (1f - master / MaxMute) * (1f - category / MaxMute);
             return OperationResponse<float>.Success(factor, clamped ? Clamped : InRange);
         }
@@ -28,7 +28,7 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Domain
         {
             if (!IsNumber(requested)) return OperationResponse<float>.Rejected(NotANumber);
             float level = Clamp(requested);
-            return OperationResponse<float>.Success(level, level == requested ? InRange : Clamped);
+            return OperationResponse<float>.Success(level, FloatCompare.Same(level, requested) ? InRange : Clamped);
         }
 
         private static bool IsNumber(float value) => !float.IsNaN(value) && !float.IsInfinity(value);

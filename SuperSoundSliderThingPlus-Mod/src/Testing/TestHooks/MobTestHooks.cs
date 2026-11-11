@@ -44,7 +44,7 @@ namespace SuperSoundSliderThingPlus.Testing.TestHooks
                 float spread = hi - lo;
                 if (spread < bestSpread) { bestSpread = spread; best = at; }
             }
-            if (bestSpread == float.MaxValue) return "Failed: no dry ground " + metres + " m from the start";
+            if (bestSpread >= float.MaxValue) return "Failed: no dry ground " + metres + " m from the start";
             best.y = ZoneSystem.instance.GetGroundHeight(best) + 0.3f;
             Rigidbody body = player.GetComponent<Rigidbody>();
             if (body != null) { body.linearVelocity = Vector3.zero; body.position = best; }
