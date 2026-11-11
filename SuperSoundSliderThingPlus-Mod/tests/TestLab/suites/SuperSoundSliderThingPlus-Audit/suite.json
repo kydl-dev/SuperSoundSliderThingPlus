@@ -1,0 +1,7 @@
+{
+  "name": "SuperSoundSliderThingPlus-Audit",
+  "description": "Developer audits (creature tour, sweep of every sound prefab): long, collect evidence, not part of a release run.",
+  "include": [ "../SuperSoundSliderThingPlus/suite.json" ],
+  "resetBetweenTests": true,
+  "tests": [ "sweep-master", "mobs-sounds", "mobs-attacks", "mobs-tour" ]
+}

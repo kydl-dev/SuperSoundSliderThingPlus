@@ -4,7 +4,7 @@
     "requireMods":  [
                         {
                             "guid":  "com.kydldev.SuperSoundSliderThingPlus",
-                            "minVersion":  "0.1.0"
+                            "minVersion":  "1.0.0"
                         },
                         {
                             "guid":  "com.kydldev.KydlCore",
@@ -114,10 +114,6 @@
                   "audit-chicken",
                   "audit-shield-hum",
                   "final-mix",
-                  "sweep-master",
-                  "mobs-sounds",
-                  "mobs-attacks",
-                  "mobs-tour",
         "sync-volumes"
               ]
 }

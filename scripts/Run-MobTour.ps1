@@ -25,4 +25,4 @@ $lab = "E:\Projects\Valheim\Claude\shared\TestLab\Run-TestLab.ps1"
 if (Get-Process valheim -ErrorAction SilentlyContinue) { Write-Error "Valheim is running - close it first."; exit 1 }
 $env:SSST_TOUR_FROM = $From
 $env:SSST_TOUR_TO = $To
-& powershell -NoProfile -ExecutionPolicy Bypass -File $lab -Mods SuperSoundSliderThingPlus -AllowBusyGpu -TimeoutMinutes $TimeoutMinutes -Tests "SuperSoundSliderThingPlus/mobs-tour" -Label $Label
+& powershell -NoProfile -ExecutionPolicy Bypass -File $lab -Mods SuperSoundSliderThingPlus -AllowBusyGpu -TimeoutMinutes $TimeoutMinutes -Tests "SuperSoundSliderThingPlus-Audit/mobs-tour" -Label $Label
