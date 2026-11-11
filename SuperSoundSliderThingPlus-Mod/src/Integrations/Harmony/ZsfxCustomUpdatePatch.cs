@@ -35,6 +35,8 @@ namespace SuperSoundSliderThingPlus.Integrations.Harmony
             // the game has just set the volume (unscaled); the audio heard right now was made with the previous scale applied
             LoudnessEqualizer.Observe(___m_audioSource, ___m_audioSource.volume * entry.LastScale);
             float scale = SoundLevels.Factor(entry.Category) * LoudnessEqualizer.GainFor(___m_audioSource.clip);
+            // a source without a mixer group (the candle sounds) never meets the game's master volume: apply it here, with the mixer's curve (amplitude = sqrt(volume))
+            if (___m_audioSource.outputAudioMixerGroup == null) scale *= SoundLevels.UngroupedMasterFactor();
             entry.LastScale = scale;
             if (scale != 1f) ___m_audioSource.volume *= scale;
             entry.Scaled = ___m_audioSource.volume;

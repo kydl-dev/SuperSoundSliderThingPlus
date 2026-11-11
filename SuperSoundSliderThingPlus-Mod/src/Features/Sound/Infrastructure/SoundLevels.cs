@@ -1,4 +1,5 @@
 using BepInEx.Configuration;
+using UnityEngine;
 using KydlCore.Common;
 using SuperSoundSliderThingPlus.Configuration;
 using SuperSoundSliderThingPlus.Features.Sound.Domain;
@@ -21,6 +22,14 @@ namespace SuperSoundSliderThingPlus.Features.Sound.Infrastructure
             var r = SoundMixRules.Factor(SoundMixRules.MinMute, MuteOf(category));
             if (!r.IsSuccess) ModLog.Warn("SoundLevels: " + category + " factor rejected - " + r.Reason + " (the sound is left alone)");
             return r.IsSuccess ? r.Value : 1f;
+        }
+
+        /// <summary>Expected outcome: the factor 0..1 the game's master volume gives a sound that is routed past the mixer (1 while the feature is not running).</summary>
+        internal static float UngroupedMasterFactor()
+        {
+            SoundFeature feature = SoundFeature.Instance;
+            if (feature == null || !feature.Running) return 1f;
+            return Mathf.Sqrt(Integrations.Valheim.GameVolume.Master());
         }
 
         /// <summary>The mute level (percent) of one category slider; 0 while the config is not bound yet.</summary>
